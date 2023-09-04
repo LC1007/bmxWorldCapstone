@@ -21,6 +21,16 @@ const routes = [
     path: '/product/:bmxID',
     name: 'product',
     component: () => import('../views/SingleView.vue')
+  },
+  {
+    path: '/signup',
+    name: 'signup',
+    component: () => import('../views/SignupView.vue')
+  },
+  {
+    path: '/login',
+    name: 'login',
+    component: () => import('../views/LoginView.vue')
   }
 ]
 

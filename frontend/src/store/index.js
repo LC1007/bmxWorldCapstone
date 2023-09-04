@@ -5,7 +5,8 @@ const url = "https://bmx.onrender.com/";
 export default createStore({
   state: {
     bikes: [],
-    selectedBike: []
+    selectedBike: [],
+    formData: []
   },
   getters: {
   },
@@ -24,6 +25,9 @@ export default createStore({
     },
     setDelete(state, data){
       state.bikes = data
+    },
+    setFormData(state, data){
+      state.formData = data
     }
   },
   actions: {
@@ -59,6 +63,16 @@ export default createStore({
         location.reload()
       } catch (error) {
         
+      }
+    },
+
+    async submitContent({commit}, formData){
+      try {
+        const { data } = await axios.post(`${url}register`, formData)
+        commit('setFormData', data)
+        console.log('success');
+      } catch (error) {
+        console.log(error);
       }
     }
   },

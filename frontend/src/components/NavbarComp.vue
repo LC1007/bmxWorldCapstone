@@ -2,7 +2,7 @@
     <div>
       <nav class="navbar navbar-expand-lg bg-body-tertiary position-fixed w-100">
         <div class="container-fluid">
-          <a class="navbar-brand" href="#">BMX <br> WORLD</a>
+          <router-link to="/"><a class="navbar-brand" href="#">BMX <br> WORLD</a></router-link>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
             aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -10,7 +10,7 @@
           <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav m-auto">
               <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="#">Home</a>
+                <router-link to=""><a class="nav-link active" aria-current="page" href="#">Home</a></router-link>
               </li>
               <li class="nav-item">
                 <a class="nav-link" href="#">Features</a>
@@ -24,10 +24,13 @@
               <li class="nav-item">
                 <router-link to="/admin" class="nav-link">Admin(DELETE LATER)</router-link>
               </li>
+              <li class="nav-item">
+                <router-link to="/login" class="nav-link">Login</router-link>
+              </li>
             </ul>
             <ul class="navbar-nav">
               <li class="nav-item">
-                <router-link to="/" class="nav-link"><i class="bi bi-person-circle"></i></router-link>
+                <router-link to="/signup" class="nav-link"><i class="bi bi-person-circle"></i></router-link>
               </li>
               <li class="nav-item">
                 <router-link to="/" class="nav-link"><i class="bi bi-basket"></i></router-link>
