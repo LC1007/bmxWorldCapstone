@@ -9,17 +9,42 @@ function createToken(user){
     })
 }
 
-function verifyUser(req, res, next){
-    const token = req.cookies.legitUser
+// function verifyUser(req, res, next){
+//     const token = req.cookies.legitUser
 
-    if(token){
+//     if(token){
+//         verify(token, process.env.SECRET_KEY, (err, decodedToken) =>{
+//             if(err) throw err
+//             console.log(decodedToken);
+//             next()
+//         })
+//     } else{
+//         res.json('You need to login in.')
+//     }
+// }
+
+function verifyUser(req, res, next){
+    try {
+        const token = req.headers["authorization"];
+        
+        if(!token){
+            throw new Error('Token not provided')
+        }
+
         verify(token, process.env.SECRET_KEY, (err, decodedToken) =>{
-            if(err) throw err
+            if(err){
+                throw new Error('Invalid token')
+            }
+
             console.log(decodedToken);
             next()
         })
-    } else{
-        res.json('You need to login in.')
+
+    } catch (error) {
+        res.status(401).json({
+            status: res.statusCode,
+            msg: error.message
+        })
     }
 }
 
