@@ -25,7 +25,9 @@ function createToken(user){
 
 function verifyUser(req, res, next){
     try {
-        const token = req.headers["authorization"];
+        const authHeader = req.headers["authorization"];
+        const token = authHeader && authHeader.split(' ')[1]
+        
         
         if(!token){
             throw new Error('Token not provided')
