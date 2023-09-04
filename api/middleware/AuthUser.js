@@ -10,7 +10,7 @@ function createToken(user){
 }
 
 function verifyUser(req, res, next){
-    const token = req.cookies.jwt
+    const token = req.cookies.legitUser
 
     if(token){
         verify(token, process.env.SECRET_KEY, (err, decodedToken) =>{

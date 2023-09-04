@@ -110,11 +110,12 @@ class Users{
                         })
 
                         if (cResult) {
-                            res.json({
-                                msg: "Logged in",
-                                token,
-                                result: result[0]
-                            });
+                            // res.json({
+                            //     msg: "Logged in",
+                            //     token,
+                            //     result: result[0]
+                            // });
+                            return res.redirect('/')
                         } else {
                             res.json({
                                 status: res.statusCode,
@@ -142,6 +143,13 @@ class Users{
                 status: res.statusCode,
                 msg: 'User has been successfully updated.'
             })
+        })
+    }
+
+    logout(req, res){
+        res.cookie('legitUser', '', { maxAge: 0 })
+        res.json({
+            msg: 'Logged out'
         })
     }
 }

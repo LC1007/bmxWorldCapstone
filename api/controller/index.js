@@ -2,9 +2,10 @@ const express = require('express')
 const routes = express()
 const { products, users } = require('../model')
 const path = require('path')
+const { verifyUser } = require('../middleware/AuthUser')
 
 // Fetch all products
-routes.get('/products', (req, res) =>{
+routes.get('/products', verifyUser, (req, res) =>{
     products.fetchProducts(req, res)
 })
 
@@ -63,6 +64,10 @@ routes.delete('/user/:userID', (req, res) =>{
 // Login 
 routes.post('/login', (req, res) =>{
     users.login(req, res)
+})
+
+routes.post('/logout', (req, res) =>{
+    users.logout(req, res)
 })
 
 module.exports ={

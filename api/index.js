@@ -18,7 +18,7 @@ app.use((req, res, next) => {
     next();
   });
 
-// Admin Page
+// Home Page
 routes.get('/', (req,res) =>{
     res.sendFile(path.resolve(__dirname, './static/html/index.html'))
 })
