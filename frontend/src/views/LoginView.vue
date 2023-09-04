@@ -14,7 +14,7 @@
                             <input type="password" class="form-control" v-model="loginData.userPass">
                           </div>
                           <div class="d-flex justify-content-center">
-                            <router-link to="/"><button class="btn btn-dark">Submit</button></router-link>
+                            <button class="btn btn-dark">Submit</button>
                           </div>
                     </form>
                 </div>
@@ -42,7 +42,7 @@ import { mapActions } from 'vuex'
         methods:{
             ...mapActions(['submitLogin']),
             async login(){
-                await this.submitContent(this.loginData)
+                await this.submitLogin(this.loginData)
             }
         }
     }
