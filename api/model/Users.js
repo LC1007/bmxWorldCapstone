@@ -104,17 +104,16 @@ class Users{
                             userPass
                         });
 
-                        res.cookie('jwt', token, {
-                            httpOnly: true,
-                            maxAge: 360000
-                        })
-
                         if (cResult) {
                             res.json({
                                 msg: "Logged in",
                                 token,
                                 result: result[0]
                             });
+                            res.cookie('jwt', token, {
+                                httpOnly: true,
+                                maxAge: 360000
+                            })
                         } else {
                             res.json({
                                 status: res.statusCode,
