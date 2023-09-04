@@ -80,11 +80,11 @@ class Users{
 
     // Login 
 
-    async login(req, res){
+    login(req, res){
         const {emailAdd, userPass} = req.body
 
         const query = 
-        `SELECT userID, firstName, lastName, gender, userDOB, emailAdd, profileUrl, userRole 
+        `SELECT userID, firstName, lastName, gender, userDOB, emailAdd, userPass, profileUrl, userRole 
          FROM Users
          WHERE emailAdd = ?`
 
@@ -104,16 +104,17 @@ class Users{
                             userPass
                         });
 
+                        res.cookie('legitUser', token, {
+                            httpOnly: true,
+                            maxAge: 360000
+                        })
+
                         if (cResult) {
                             res.json({
                                 msg: "Logged in",
                                 token,
                                 result: result[0]
                             });
-                            res.cookie('jwt', token, {
-                                httpOnly: true,
-                                maxAge: 360000
-                            })
                         } else {
                             res.json({
                                 status: res.statusCode,
