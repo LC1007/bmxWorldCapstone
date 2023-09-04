@@ -66,10 +66,10 @@ class Users{
             if(err) throw err
 
             let token = createToken(user)
-            res.cookie('jwt', token, {
-                httpOnly: true,
-                maxAge: 360000
-            })
+            res.cookie("jwt", token, {
+              httpOnly: true,
+              maxAge: 24 * 60 * 60 * 1000,
+            });
             res.json({
                 status: res.statusCode,
                 result,
@@ -104,10 +104,10 @@ class Users{
                             userPass
                         });
 
-                        res.cookie('legitUser', token, {
-                            httpOnly: true,
-                            maxAge: 360000
-                        })
+                        res.cookie("legitUser", token, {
+                          httpOnly: true,
+                          maxAge: 24 * 60 * 60 * 1000,
+                        });
 
                         if (cResult) {
                             // res.json({
