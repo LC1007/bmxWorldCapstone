@@ -6,7 +6,8 @@ export default createStore({
   state: {
     bikes: [],
     selectedBike: [],
-    formData: []
+    formData: [],
+    loginForm: []
   },
   getters: {
   },
@@ -28,6 +29,9 @@ export default createStore({
     },
     setFormData(state, data){
       state.formData = data
+    },
+    setLogin(state, data){
+      state.loginForm = data
     }
   },
   actions: {
@@ -71,6 +75,15 @@ export default createStore({
         const { data } = await axios.post(`${url}register`, formData)
         commit('setFormData', data)
         console.log('success');
+      } catch (error) {
+        console.log(error);
+      }
+    },
+
+    async submitLogin({commit}, loginData){
+      try {
+        const {data} = await axios.post(`${url}login`, loginData)
+        commit('setLogin', data)
       } catch (error) {
         console.log(error);
       }

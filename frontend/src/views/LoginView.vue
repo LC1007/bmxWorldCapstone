@@ -4,14 +4,14 @@
             <div class="row d-flex justify-content-center align-content-center">
                 <div class="col-12 col-lg-6 col-md-4 d-flex flex-column justify-content-center">
                     <h1 class="text-center">Login</h1>
-                    <form action="">
+                    <form @submit.prevent="login">
                           <div class="mb-3">
                             <label for="email" class="form-label">Email address</label>
-                            <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="john@gmail.com">
+                            <input type="email" class="form-control" placeholder="john@gmail.com" v-model="loginData.emailAdd">
                           </div>
                           <div class="mb-3">
                             <label for="password" class="form-label">Password</label>
-                            <input type="password" class="form-control" id="exampleFormControlInput1">
+                            <input type="password" class="form-control" v-model="loginData.userPass">
                           </div>
                           <div class="d-flex justify-content-center">
                             <router-link to="/"><button class="btn btn-dark">Submit</button></router-link>
@@ -29,8 +29,22 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
     export default {
-        
+        data(){
+            return{
+                loginData:{
+                    emailAdd: '',
+                    userPass: ''
+                }
+            }
+        },
+        methods:{
+            ...mapActions(['submitLogin']),
+            async login(){
+                await this.submitContent(this.loginData)
+            }
+        }
     }
 </script>
 
