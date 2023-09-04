@@ -104,6 +104,11 @@ class Users{
                             userPass
                         });
 
+                        res.cookie('jwt', token, {
+                            httpOnly: true,
+                            maxAge: 360000
+                        })
+
                         if (cResult) {
                             res.json({
                                 msg: "Logged in",
