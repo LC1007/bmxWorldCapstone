@@ -5,7 +5,14 @@ const path = require('path')
 const cors = require('cors')
 const cookieParse = require('cookie-parser')
 
-app.use(express.static('./static'), express.urlencoded({ extended: false }), express.json(), cookieParse(), cors({ origin: '*', credentials: true }), routes)
+app.use(
+  express.static("./static"),
+  express.urlencoded({ extended: false }),
+  express.json(),
+  cookieParse(),
+  cors({ origin: "http://localhost:8080/", credentials: true }),
+  routes
+);
 
 // Middleware
 app.use((req, res, next) => {
