@@ -10,7 +10,7 @@ app.use(
   express.urlencoded({ extended: false }),
   express.json(),
   cookieParse(),
-  cors({ origin: "http://localhost:8080/", credentials: true }),
+  cors(),
   routes
 );
 
