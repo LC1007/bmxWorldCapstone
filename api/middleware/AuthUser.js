@@ -11,6 +11,7 @@ function createToken(user){
 
 function verifyUser(req, res, next){
     const token = req.cookies.legitUser
+    console.log(token);
 
     if(token){
         verify(token, process.env.SECRET_KEY, (err, decodedToken) =>{

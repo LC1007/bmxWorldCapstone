@@ -88,7 +88,7 @@ class Users{
          FROM Users
          WHERE emailAdd = ?`
 
-         db.query(query, [emailAdd], (err, result) =>{
+         db.query(query, [emailAdd], async (err, result) =>{
             if(err) throw err
             if(!result?.length){
                 res.json({
@@ -96,7 +96,7 @@ class Users{
                     msg: "You provided a wrong email."
                 })
             }else {
-                compare(userPass, result[0].userPass, (cErr, cResult) => {
+                await compare(userPass, result[0].userPass, (cErr, cResult) => {
                         if (cErr) throw cErr;
                         // Create a token
                         const token = createToken({
@@ -104,18 +104,13 @@ class Users{
                             userPass
                         });
 
-                        res.cookie("legitUser", token, {
-                          httpOnly: true,
-                          maxAge: 24 * 60 * 60 * 1000,
-                        });
-
                         if (cResult) {
-                            // res.json({
-                            //     msg: "Logged in",
-                            //     token,
-                            //     result: result[0]
-                            // });
-                            return res.redirect('/')
+                            res.json({
+                                msg: "Logged in",
+                                token,
+                                result: result[0]
+                            });
+                            console.log(token);
                         } else {
                             res.json({
                                 status: res.statusCode,
