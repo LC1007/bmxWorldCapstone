@@ -1,5 +1,9 @@
 import { createStore } from 'vuex'
 import axios from 'axios'
+import useCookies from 'vue3-usecookies';
+import router from '@/router';
+
+const { cookies } = useCookies() 
 const url = "https://bmx.onrender.com/";
 
 export default createStore({
@@ -7,7 +11,8 @@ export default createStore({
     bikes: [],
     selectedBike: [],
     formData: [],
-    loginForm: []
+    loginForm: [],
+    user: []
   },
   getters: {
   },
@@ -32,6 +37,9 @@ export default createStore({
     },
     setLogin(state, data){
       state.loginForm = data
+    },
+    setUser(state, user){
+      state.user = user
     }
   },
   actions: {
@@ -54,7 +62,7 @@ export default createStore({
         const updatedBike = {bmxID, ...updatedFields}
         const {data} = await axios.patch(`${url}product/${updatedBike.bmxID}`, updatedBike)
         commit('setBikes', data.result)
-        location.reload()
+        router.push({name: 'admin'})
       } catch (error) {
         console.log(error);
       }
@@ -83,7 +91,7 @@ export default createStore({
     async submitLogin({commit}, loginData){
       try {
         const {data} = await axios.post(`${url}login`, loginData)
-        commit('setLogin', data)
+        commit('setUser', data)
       } catch (error) {
         console.log(error);
       }
