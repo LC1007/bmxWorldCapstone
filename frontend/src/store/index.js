@@ -1,6 +1,6 @@
 import { createStore } from 'vuex'
 import axios from 'axios'
-import useCookies from 'vue3-usecookies';
+import {useCookies} from 'vue3-cookies';
 import router from '@/router';
 
 const { cookies } = useCookies() 
@@ -62,7 +62,6 @@ export default createStore({
         const updatedBike = {bmxID, ...updatedFields}
         const {data} = await axios.patch(`${url}product/${updatedBike.bmxID}`, updatedBike)
         commit('setBikes', data.result)
-        router.push({name: 'admin'})
       } catch (error) {
         console.log(error);
       }
@@ -90,8 +89,13 @@ export default createStore({
 
     async submitLogin({commit}, loginData){
       try {
-        const {data} = await axios.post(`${url}login`, loginData)
-        commit('setUser', data)
+        const {token, result } = await axios.post(`${url}login`, loginData)
+        if(result){
+          commit('setUser', { result })
+          cookies.set("LegitUser", {token, result}, '1h')
+        } else{
+
+        }
       } catch (error) {
         console.log(error);
       }

@@ -30,6 +30,8 @@
 
 <script>
 import { mapActions } from 'vuex'
+import {useCookies} from 'vue3-cookies'
+const { cookies } = useCookies()
     export default {
         data(){
             return{
@@ -43,7 +45,11 @@ import { mapActions } from 'vuex'
             ...mapActions(['submitLogin']),
             async login(){
                 await this.submitLogin(this.loginData)
+                console.log(cookies.get('LegitUser'));
             }
+        },
+        mounted(){
+            console.log(cookies.get('LegitUser'));
         }
     }
 </script>

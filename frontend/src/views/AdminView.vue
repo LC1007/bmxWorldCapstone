@@ -120,7 +120,7 @@
                                     </button>
                                 </template>
                                 <template v-else>
-                                    <button class="btn btn-success my-2 disabled" @click="saveEdit(bike)">
+                                    <button class="btn btn-success my-2" @click="saveEdit(bike)">
                                         <i class="bi bi-save2"></i>
                                     </button>
                                     <button class="btn btn-danger" @click="stopEdit(bike)">
