@@ -2,23 +2,24 @@ import { createStore } from 'vuex'
 import axios from 'axios'
 import {useCookies} from 'vue3-cookies';
 import router from '@/router';
+// import usersModule from './modules/users'
+import usersModule from './modules/users'
+import productsModule from './modules/products'
 
 const { cookies } = useCookies() 
 const url = "https://bmx.onrender.com/";
 
 export default createStore({
   state: {
-    bikes: [],
     selectedBike: [],
     formData: [],
     loginForm: [],
-    user: []
   },
   getters: {
   },
   mutations: {
-    setBikes(state, updatedBike){
-      state.bikes = updatedBike
+    setUsers(state, users){
+      state.users = users
     },
     updateBike(state, updatedBike){
       const exisitingProdID = state.bikes.findIndex((bike) => bike.bmxID === updatedBike.bmxID)
@@ -43,11 +44,6 @@ export default createStore({
     }
   },
   actions: {
-    async fetchBikes({commit}){
-      const {data} = await axios.get(`${url}products`)
-      commit("setBikes", data.results);
-    },
-
     async fetchBike({commit}, bmxID){
       try {
         const {data} = await axios.get(`${url}product/${bmxID}`)
@@ -57,15 +53,15 @@ export default createStore({
       }
     },
 
-    async updateBike({commit}, {bmxID, ...updatedFields}){
-      try {
-        const updatedBike = {bmxID, ...updatedFields}
-        const {data} = await axios.patch(`${url}product/${updatedBike.bmxID}`, updatedBike)
-        commit('setBikes', data.result)
-      } catch (error) {
-        console.log(error);
-      }
-    },
+    // async updateBike({commit}, {bmxID, ...updatedFields}){
+    //   try {
+    //     const updatedBike = {bmxID, ...updatedFields}
+    //     const {data} = await axios.patch(`${url}product/${updatedBike.bmxID}`, updatedBike)
+    //     commit('setBikes', data.result)
+    //   } catch (error) {
+    //     console.log(error);
+    //   }
+    // },
 
     async deleteProd({commit}, bmxID){
       try {
@@ -89,12 +85,12 @@ export default createStore({
 
     async submitLogin({commit}, loginData){
       try {
-        const {token, result } = await axios.post(`${url}login`, loginData)
+        const {token, result, msg } = (await axios.post(`${url}login`, loginData).data)
         if(result){
-          commit('setUser', { result })
-          cookies.set("LegitUser", {token, result}, '1h')
+          commit('setUser', { result, msg })
+          cookies.set("LoggedInUser", {token, result}, '1h')
         } else{
-
+          console.log('error');
         }
       } catch (error) {
         console.log(error);
@@ -102,5 +98,8 @@ export default createStore({
     }
   },
   modules: {
+    // users: usersModule
+    usersModule,
+    productsModule
   }
 })

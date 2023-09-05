@@ -48,6 +48,7 @@
                 </div>
             </div>
             <div class="table-responsive">
+                <h1>Products</h1>
                 <table class="table">
                     <thead>
                         <tr>
@@ -136,6 +137,45 @@
                         </tr>
                     </tbody>
                 </table>
+
+                <h1>Users</h1>
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>First Name</th>
+                                <th>Last Name</th>
+                                <th>Gender</th>
+                                <th>DOB</th>
+                                <th>Email Address</th>
+                                <th>Profile Url</th>
+                                <th>User</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="user in users" :key="user.userID">
+                                <td>{{ user.userID }}</td>
+                                <td>{{ user.firstName }}</td>
+                                <td>{{ user.lastName }}</td>
+                                <td>{{ user.gender }}</td>
+                                <td>{{ user.userDOB }}</td>
+                                <td>{{ user.emailAdd }}</td>
+                                <td>{{ user.profileUrl }}</td>
+                                <td>{{ user.userRole }}</td>
+                                <td>
+                                    <button class="btn btn-dark m-2">
+                                        <i class="bi bi-pencil"></i>
+                                    </button>
+                                    <button class="btn btn-danger">
+                                        <i class="bi bi-trash3"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
@@ -149,13 +189,14 @@ export default {
         Navbar
     },
     computed: {
-        ...mapState(['bikes'])
+        ...mapState(['bikes','users'], 'usersModule', 'productsModule')
     },
     mounted() {
-        this.fetchBikes()
+        this.fetchBikes(),
+        this.fetchUsers()
     },
     methods: {
-        ...mapActions(['fetchBikes', 'updateBike', 'deleteProd']),
+        ...mapActions(['fetchBikes', 'fetchUsers', 'updateBike', 'deleteProd'], 'usersModule', 'productsModule'),
         startEdit(bike) {
             bike.isEdit = true
         },
