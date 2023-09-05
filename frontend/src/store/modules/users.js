@@ -4,7 +4,7 @@ import authUser from '@/services/AuthenicateUser'
 import router from "@/router";
 
 const { cookies } = useCookies()
-const url = "https://bmx.onrender.com/";
+const url = "https://bmxcap.onrender.com/";
 
 
 const state = {
@@ -24,11 +24,11 @@ const actions = {
 
   async submitLogin({ commit }, loginData) {
     try {
-      const { msg, token, result } = (await axios.post(`${url}login`, loginData))
+      const { msg, token, result } = (await axios.post(`${url}auth/login`, loginData))
         .data;
       if (result) {
         commit("setUser", { result, msg });
-        cookies.set("loggedInUser", { token });
+        cookies.set("loggedInUser", { token, msg, result });
         authUser.applyToken(token);
         router.push({ name: "home" });
       } else {

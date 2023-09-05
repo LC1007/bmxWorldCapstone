@@ -16,7 +16,6 @@ const actions = {
     try {
       const { data } = await axios.get(`${url}products`);
       context.commit("setBikes", data.results);
-      console.log(data.results);
     } catch (error) {
       console.log("There was an error trying to fetch products:", error);
     }

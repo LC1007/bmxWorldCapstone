@@ -21,12 +21,13 @@
               <li class="nav-item">
                   <router-link to="/product" class="nav-link">Single Product</router-link>
                 </li>
-              <li class="nav-item">
+              <li class="nav-item" v-show="isAdmin">
                 <router-link to="/admin" class="nav-link">Admin(DELETE LATER)</router-link>
               </li>
               <li class="nav-item">
                 <router-link to="/login" class="nav-link">Login</router-link>
               </li>
+              <button @click="logout">Logout</button>
             </ul>
             <ul class="navbar-nav">
               <li class="nav-item">
@@ -49,8 +50,26 @@
   </template>
   
   <script>
+import { useCookies } from 'vue3-cookies'
+const { cookies } = useCookies()
   export default {
-  
+    computed:{
+      user(){
+        return this.$store.state.user || cookies.get('loggedInUser')
+      },
+      result(){
+        return this.user?.result
+      },
+      isAdmin(){
+        return this.result?.userRole?.toLowerCase() === 'admin'
+      }
+    },
+    methods:{
+      logout(){
+        console.log(cookies.remove('loggedInUser'));
+        location.reload()
+      }
+    }
   }
   </script>
   
