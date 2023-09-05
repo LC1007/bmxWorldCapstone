@@ -53,7 +53,7 @@
                     <thead>
                         <tr>
                             <th>ID</th>
-                            <th>BXM Name</th>
+                            <th>BMX Name</th>
                             <th>BMX Description</th>
                             <th>Quantity</th>
                             <th>Amount</th>
@@ -183,20 +183,26 @@
 
 <script>
 import Navbar from '@/components/NavbarComp.vue'
-import { mapActions, mapState } from 'vuex';
+import { mapActions, mapMutations, mapState } from 'vuex';
 export default {
     components: {
         Navbar
     },
     computed: {
-        ...mapState(['bikes','users'], 'usersModule', 'productsModule')
+        ...mapState(['users'], 'usersModule'),
+        ...mapState(['bikes'], 'productsModule'),
     },
     mounted() {
-        this.fetchBikes(),
+        this.fetchBikes()
         this.fetchUsers()
     },
     methods: {
-        ...mapActions(['fetchBikes', 'fetchUsers', 'updateBike', 'deleteProd'], 'usersModule', 'productsModule'),
+        // Handles productsModule actions
+        ...mapActions(['fetchBikes'], 'productsModule'),
+
+        // Handles usersModule actions
+        ...mapActions(['fetchUsers'], 'usersModule'),
+
         startEdit(bike) {
             bike.isEdit = true
         },

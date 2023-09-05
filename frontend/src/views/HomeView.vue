@@ -89,13 +89,13 @@ export default{
     Navbar
   },
   computed:{
-    ...mapState(['bikes'])
+    ...mapState(['bikes'], 'productsModule')
   },
   mounted(){
     this.fetchBikes()
   },  
   methods:{
-    ...mapActions(['fetchBikes'])
+    ...mapActions(['fetchBikes'], 'productsModule')
   }
 }
 </script>

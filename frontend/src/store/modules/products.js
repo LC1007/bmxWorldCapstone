@@ -2,28 +2,30 @@ import axios from "axios"
 const url = "https://bmx.onrender.com/";
 
 const state = {
-    bikes: null
-}
+  bikes: null
+};
 
 const mutations = {
-    setBikes(state, updatedBike){
-        state.bikes = updatedBike
-    }
-}
+  setBikes(state, data) {
+    state.bikes = data;
+  }
+};
 
 const actions = {
-    async fetchBikes({commit}){
-        try {
-            const { data } = await axios.get(`${url}products`)
-            commit('setBikes', data.results)
-        } catch (error) {
-            console.log('There was an error trying to fetch products');
-        }
+  async fetchBikes(context) {
+    try {
+      const { data } = await axios.get(`${url}products`);
+      context.commit("setBikes", data.results);
+      console.log(data.results);
+    } catch (error) {
+      console.log("There was an error trying to fetch products:", error);
     }
-}
+  },
+
+};
 
 export default {
-    state,
-    mutations,
-    actions
-}
+  state,
+  mutations,
+  actions,
+};
