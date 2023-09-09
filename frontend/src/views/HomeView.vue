@@ -26,7 +26,7 @@
           <div class="row my-5 g-2">
             <div class="col" v-for="bike in bikes" :key="bike.bmxID">
               <div class="card" style="width: 18rem">
-                <img :src="bike.prodUrl" class="card-img-top" alt="">
+                <img :src="bike.prodUrl" class="card-img-top top-imgs" alt="">
                 <div class="card-body">
                   <h4 class="card-tite">{{ bike.prodName }}</h4>
                   <p class="card-text">{{ bike.amount }}</p>
@@ -89,13 +89,13 @@ export default{
     Navbar
   },
   computed:{
-    ...mapState(['bikes'], 'productsModule')
+    ...mapState('products', ['bikes','selectedBike'])
   },
   mounted(){
     this.fetchBikes()
   },  
   methods:{
-    ...mapActions(['fetchBikes'], 'productsModule')
+    ...mapActions('products', ['fetchBikes', 'fetchBike'])
   }
 }
 </script>
@@ -104,6 +104,11 @@ export default{
 .custom-square-img{
     aspect-ratio: 1 / 1;
     object-fit: cover;
+}
+.top-imgs{
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    width: 100%;
 }
 
 .custom-grid{

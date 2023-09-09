@@ -8,32 +8,34 @@
                     <li class="breadcrumb-item active" aria-current="page">Neo Bmx 16"</li>
                 </ol>
             </nav>
-            <div class="row m-5">
+            <!-- <div class="row m-5">
                 <div class="col-12 col-lg-6 col-md-6">
                     <img :src="selectedBike.prodUrl" class="custom-img" alt="">
-                    <!-- <div class="d-flex justify-content-center">
-                        <div class="d-flex align-items-center">
-                            <i class="bi bi-caret-left"></i>
-                        </div>
-                        <img src="https://i.postimg.cc/Prw4TBd6/thumb-63ac298f5d165.jpg" class="custom-img-small m-2"
-                            alt="">
-                        <img src="https://i.postimg.cc/Prw4TBd6/thumb-63ac298f5d165.jpg" class="custom-img-small m-2"
-                            alt="">
-                        <img src="https://i.postimg.cc/Prw4TBd6/thumb-63ac298f5d165.jpg" class="custom-img-small m-2"
-                            alt="">
-                        <img src="https://i.postimg.cc/Prw4TBd6/thumb-63ac298f5d165.jpg" class="custom-img-small m-2"
-                            alt="">
-                        <div class="d-flex align-items-center">
-                            <i class="bi bi-caret-right"></i>
-                        </div>
-                    </div> -->
                 </div>
                 <div class="col-12 col-lg-6 col-md-6 ps-5" v-if="selectedBike">
                     <h1>{{ selectedBike.prodName }}</h1>
-                    <p>{{ selectedBike.amount }}</p>
+                    <p>R{{ selectedBike.amount }}</p>
                     <p>{{ selectedBike.prodDesc }}</p>
-                    <button class="btn btn-dark">Add to cart</button>
+                    <button class="btn btn-dark" @click="addToCart(selectedBike)">Add to cart</button>
                 </div>
+                <div v-else>
+                    <p>loading...</p>
+                </div>
+            </div> -->
+            <div class="d-sm-flex justify-content-center m-2 m-5 gap-3" v-if="selectedBike">
+                <div>
+                    <!-- <img src="https://i.postimg.cc/Prw4TBd6/thumb-63ac298f5d165.jpg" alt=""> -->
+                    <img :src="selectedBike.prodUrl" class="custom-img pe-md-5" alt="">
+                </div>
+                <div class="w-75">
+                    <h1>{{ selectedBike.prodName }}</h1>
+                    <p>R{{ selectedBike.amount }}</p>
+                    <p>{{ selectedBike.prodDesc }}</p>
+                    <button class="btn btn-dark" @click="add">Add to cart</button>
+                </div>
+            </div>
+            <div v-else>
+                <p>loading...</p>
             </div>
         </div>
     </div>
@@ -42,19 +44,32 @@
 <script>
 import Navbar from '@/components/NavbarComp.vue'
 import { mapActions, mapState } from 'vuex'
+
 export default {
+
     components: {
         Navbar
     },
-    computed:{
-        ...mapState(['selectedBike'])
+    computed: {
+        ...mapState('products', ['selectedBike', 'bikeID']),
+        ...mapState('usermodule', ['userID'])
     },
-    created(){
+    async created() {
         const bmxID = this.$route.params.bmxID
-        this.fetchBike(bmxID)
+        await this.fetchBike(bmxID)
     },
-    methods:{
-        ...mapActions(['fetchBike'])
+    methods: {
+        ...mapActions('products', ['fetchBike', 'addToCart']),
+
+        add(){
+            const loggedInUserID = this.userID
+            const bmxID = this.bikeID
+
+            this.addToCart(loggedInUserID, bmxID)
+            // console.log("This is coming from the singleview file: ",loggedInUserID);
+            // console.log("Testing the bmxID: ",bmxID);
+        },
+
     }
 }
 </script>
@@ -73,4 +88,5 @@ export default {
 i {
     font-size: 2rem;
     cursor: pointer;
-}</style>
+}
+</style>

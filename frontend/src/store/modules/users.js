@@ -1,22 +1,34 @@
-import axios from "axios"
-import {useCookies} from "vue3-cookies";
-import authUser from '@/services/AuthenicateUser'
+import axios from "axios";
+import { useCookies } from "vue3-cookies";
+import authUser from "@/services/AuthenicateUser";
 import router from "@/router";
 
-const { cookies } = useCookies()
+const { cookies } = useCookies();
 const url = "https://bmxcap.onrender.com/";
-
 
 const state = {
     users: null,
-    user: null
+    user: null,
+    userID: localStorage.getItem('userID') || null
 }
+
+const mutations = {
+  setUsers(state, data) {
+    state.users = data;
+  },
+  setUser(state, data) {
+    state.user = data;
+  },
+  setUserID(state, userID) {
+    state.userID = userID;
+  },
+};
 
 const actions = {
   async fetchUsers({ commit }) {
     try {
       const { data } = await axios.get(`${url}users`);
-      commit("setUsers", data.results);
+      commit("setUsers", data.users);
     } catch (error) {
       console.log("There was an error trying to fetch users");
     }
@@ -24,21 +36,31 @@ const actions = {
 
   async submitLogin({ commit }, loginData) {
     try {
-      const { msg, token, result } = (await axios.post(`${url}auth/login`, loginData))
-        .data;
+      const { msg, token, result, userID } = (await axios.post(`${url}login`, loginData)).data;
       if (result) {
-        commit("setUser", { result, msg });
-        cookies.set("loggedInUser", { token, msg, result });
+        // const loggedID = result.userID
+
+        localStorage.setItem('userID', userID)
+
+        commit("setUser", { result });
+        commit("setUserID", userID);
+        console.log("UserData: ", userID);
+
+        cookies.set("loggedInUser", { token, result });
         authUser.applyToken(token);
         router.push({ name: "home" });
       } else {
         console.log(msg);
       }
-    } catch (error) {}
+    } catch (error) {
+      console.log(error);
+    }
   },
 };
 
 export default {
+    namespaced: true,
     state,
+    mutations,
     actions
 }

@@ -29,7 +29,7 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapActions, mapMutations } from 'vuex'
 import {useCookies} from 'vue3-cookies'
 const { cookies } = useCookies()
     export default {
@@ -42,17 +42,17 @@ const { cookies } = useCookies()
             }
         },
         methods:{
-            ...mapActions(['submitLogin', 'fetchUsers'], 'usersModule'),
+            ...mapActions('usermodule', ['submitLogin', 'fetchUsers']),
             async login(){
                 await this.submitLogin(this.loginData)
                 console.log(cookies.get('loggedInUser'));
             }
         },
-        beforeCreate(){
-            this.$store.dispatch('fetchUsers')
-        },
+        // beforeCreate(){
+        //     this.$store.dispatch('fetchUsers')
+        // },
         mounted(){
-            console.log(cookies.get('LegitUser'));
+            console.log(cookies.get('loggedInUser'));
         }
     }
 </script>
