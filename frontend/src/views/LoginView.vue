@@ -45,14 +45,14 @@ const { cookies } = useCookies()
             ...mapActions('usermodule', ['submitLogin', 'fetchUsers']),
             async login(){
                 await this.submitLogin(this.loginData)
-                console.log(cookies.get('loggedInUser'));
+                cookies.get('loggedInUser');
             }
         },
         // beforeCreate(){
         //     this.$store.dispatch('fetchUsers')
         // },
         mounted(){
-            console.log(cookies.get('loggedInUser'));
+            cookies.get('loggedInUser');
         }
     }
 </script>

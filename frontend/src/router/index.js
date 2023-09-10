@@ -59,6 +59,16 @@ const routes = [
     name: "test",
     component: () => import("../views/AdminTest.vue"),
   },
+  {
+    path: "/createprod",
+    name: "createprod",
+    component: () => import("../components/CreateProdComp.vue"),
+  },
+  {
+    path: "/profile",
+    name: "profile",
+    component: () => import("../views/ProfileView.vue"),
+  },
 ];
 
 const router = createRouter({

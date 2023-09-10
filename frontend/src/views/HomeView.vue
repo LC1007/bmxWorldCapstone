@@ -107,8 +107,7 @@ export default{
 }
 .top-imgs{
     aspect-ratio: 1 / 1;
-    object-fit: cover;
-    width: 100%;
+    object-fit: contain;
 }
 
 .custom-grid{

@@ -9,7 +9,7 @@ const url = "https://bmxcap.onrender.com/";
 const state = {
     users: null,
     user: null,
-    userID: localStorage.getItem('userID') || null
+    userID: localStorage.getItem('userID') || null 
 }
 
 const mutations = {
@@ -34,6 +34,15 @@ const actions = {
     }
   },
 
+  async fetchUser({commit}, userID){
+    try {
+      const { data } = await axios.get(`${url}user/${userID}`)
+      commit('setUser', data.user[0])
+    } catch (error) {
+      console.log("There was an error trying to fetch user with ID:", userID);
+    }
+  },
+
   async submitLogin({ commit }, loginData) {
     try {
       const { msg, token, result, userID } = (await axios.post(`${url}login`, loginData)).data;
@@ -44,7 +53,7 @@ const actions = {
 
         commit("setUser", { result });
         commit("setUserID", userID);
-        console.log("UserData: ", userID);
+        // console.log("UserData: ", userID);
 
         cookies.set("loggedInUser", { token, result });
         authUser.applyToken(token);

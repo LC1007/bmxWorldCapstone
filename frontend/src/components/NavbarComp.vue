@@ -28,7 +28,7 @@
             </ul>
             <ul class="navbar-nav">
               <li class="nav-item">
-                <router-link to="/signup" class="nav-link fw-bold" v-if="hasCookie"><i class="bi bi-person-circle"></i></router-link>
+                <router-link to="/profile" class="nav-link fw-bold" v-if="hasCookie"><i class="bi bi-person-circle"></i></router-link>
               </li>
               <li class="nav-item">
                   <router-link to="/signup" class="nav-link fw-bold" v-if="!hasCookie">Sign Up</router-link>

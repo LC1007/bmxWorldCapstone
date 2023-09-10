@@ -57,7 +57,7 @@
             </div> -->
             <div class="d-flex justify-content-between my-5">
                 <h1>Products</h1>
-                <button class="btn btn-dark"><i class="bi bi-plus pe-2" style="font-size: 1rem"></i>Create Product</button>
+                <router-link to="/createprod" class="btn btn-dark"><i class="bi bi-plus pe-2" style="font-size: 1rem"></i>Create Product</router-link>
             </div>
                 <!-- <table class="table">
                     <thead>
@@ -342,7 +342,7 @@ export default {
 <style scoped>
 .custom-img {
     aspect-ratio: 1 / 1;
-    object-fit: cover;
+    object-fit: contain;
 }
 
 .custom-card{
