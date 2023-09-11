@@ -44,6 +44,8 @@
 <script>
 import Navbar from '@/components/NavbarComp.vue'
 import { mapActions, mapState } from 'vuex'
+import {useCookies} from 'vue3-cookies'
+const { cookies } = useCookies()
 
 export default {
 
@@ -62,12 +64,13 @@ export default {
         ...mapActions('products', ['fetchBike', 'addToCart']),
 
         add(){
-            const loggedInUserID = this.userID
-            const bmxID = this.bikeID
-
-            this.addToCart(loggedInUserID, bmxID)
-            // console.log("This is coming from the singleview file: ",loggedInUserID);
-            // console.log("Testing the bmxID: ",bmxID);
+            const cookieToken = cookies.get('loggedInUser')
+            if(cookieToken){
+                const loggedInUserID = this.userID
+                const bmxID = this.bikeID
+    
+                this.addToCart(loggedInUserID, bmxID)
+            }
         },
 
     }
@@ -78,7 +81,7 @@ export default {
 .custom-img {
     aspect-ratio: 1 / 1;
     width: 100%;
-    object-fit: cover;
+    object-fit: contain;
 }
 
 .custom-img-small {

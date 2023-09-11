@@ -29,7 +29,9 @@
                                 </td>
                                 <td>{{ items.prodName }}</td>
                                 <td>R{{ items.amount }}</td>
-                                <td><i class="bi bi-trash3"></i></td>
+                                <td>
+                                    <button class="btn" @click="delProd(items.orderID)"><i class="bi bi-trash3"></i></button>
+                                </td>
                             </tr>
                         </tbody>
                     </table>
@@ -87,7 +89,15 @@ export default {
         ...mapState('orders', ['orders'])
     },
     methods: {
-        ...mapActions('orders', ['fetchOrders'])
+        ...mapActions('orders', ['fetchOrders', 'deleteOrder']),
+        async delProd(items){
+            try {
+               await this.deleteOrder(items)
+                this.fetchOrders()
+            } catch (error) {
+                console.log(error);
+            }
+        }
     },
     mounted() {
         this.fetchOrders()

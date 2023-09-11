@@ -8,6 +8,9 @@ const state = {
 const mutations = {
     setOrders(state, orders){
         state.orders = orders
+    },
+    setOrderDelete(state, data){
+        state.orders = data
     }
 }
 
@@ -16,7 +19,17 @@ const actions = {
         try {
             const userID = localStorage.getItem('userID')
             const { data } = await axios.get(`${url}orders/${userID}`);
-            commit("setOrders", data.results);
+            commit("setOrders", data.orders);
+            console.log(data.results);
+        } catch (error) {
+            console.log(error);
+        }
+    },
+    
+    async deleteOrder({commit}, bmxID){
+        try {
+            const { data } = await axios.delete(`${url}order/${bmxID}`)
+            commit('setOrderDelete', data)
         } catch (error) {
             console.log(error);
         }

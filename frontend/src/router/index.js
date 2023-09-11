@@ -20,7 +20,7 @@ const routes = [
     component: () => import("../views/AdminView.vue"),
     beforeEnter: () => {
       if (!cookies.get("loggedInUser")) {
-        router.push({ name: "signup" });
+        router.push({ name: "login" });
       }
     },
   },

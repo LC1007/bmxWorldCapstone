@@ -16,17 +16,9 @@ const getters = {
 }
 
 const mutations = {
-  setBikes(state, data) {
-    state.bikes = data;
+  setBikes(state, updatedBike) {
+    state.bikes = updatedBike;
   },
-  // Sorting
-  // setSortData(state, sortedData){
-  //   if(sortedData === 'prodName'){
-  //     state.setBikes.sort((a, b) => a.prodName.localeCompare(b.prodName));
-  //   } else if(sortedData === 'amount'){
-  //     state.setBikes.sort((a, b) => a.amount - b.amount)
-  //   }
-  // },
   setProdDetails(state, data){
     state.prodDetails = data
   },
@@ -38,6 +30,12 @@ const mutations = {
   },
   setBikeID(state, data){
     state.bikeID = data
+  },
+  setUpdateBike(state, updatedBike){
+    const exisitingProdID = state.bikes.findIndex((bike) => bike.bmxID === updatedBike.bmxID)
+    if(exisitingProdID !== 1){
+      state.bikes[exisitingProdID] = updatedBike
+    }
   }
 };
 
@@ -75,12 +73,23 @@ const actions = {
     } catch (error) {}
   },
 
+  async updateBike({commit}, { bmxID, ...updatedFields }){
+    try {
+      const updatedBike = { bmxID, ...updatedFields }
+      const { data } = await axios.patch(`${url}product/${updatedBike.bmxID}`, updatedBike)
+      commit('setBikes', data.products)
+      location.reload()
+    } catch (error) {
+      console.log(error);
+    }
+  },
+
   async addToCart({ commit }, loggedInUserID) {
     try {
       const bmxID = localStorage.getItem('bikeID')
-      const { data } = await axios.post(`${url}orders/${loggedInUserID}/${bmxID}`);
-      commit("setCart", data.result);
-      // console.log(data.result);
+      const { data } = await axios.post(`${url}order/${loggedInUserID}/${bmxID}`);
+      commit("setCart", data);
+      console.log(data);
     } catch (error) {
       console.log(error);
     }

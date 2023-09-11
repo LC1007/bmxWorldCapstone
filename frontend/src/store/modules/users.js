@@ -2,6 +2,7 @@ import axios from "axios";
 import { useCookies } from "vue3-cookies";
 import authUser from "@/services/AuthenicateUser";
 import router from "@/router";
+import sweet from 'sweetalert'
 
 const { cookies } = useCookies();
 const url = "https://bmxcap.onrender.com/";
@@ -57,9 +58,20 @@ const actions = {
 
         cookies.set("loggedInUser", { token, result });
         authUser.applyToken(token);
+        sweet({
+          title: 'Login',
+          text: msg,
+          icon: 'success',
+          timer: 4000
+        })
         router.push({ name: "home" });
       } else {
-        console.log(msg);
+        sweet({
+          title: 'Error',
+          text: msg,
+          icon: 'error',
+          timer: 4000
+        })
       }
     } catch (error) {
       console.log(error);
