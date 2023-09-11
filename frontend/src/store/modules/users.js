@@ -44,17 +44,38 @@ const actions = {
     }
   },
 
+  async submitSignup({commit}, formData){
+    try {
+      const { data, msg, token,  } = await axios.post(`${url}register`, formData)
+      if(data){
+        commit('setUser', { data, token })
+        sweet({
+          title: 'Account Created',
+          text: msg,
+          icon: 'success',
+          timer: 4000
+        })
+      } else{
+        sweet({
+          title: 'Error',
+          text: msg,
+          icon: 'error',
+          timer: 4000
+        })
+      }
+    } catch (error) {
+      
+    }
+  },
+
   async submitLogin({ commit }, loginData) {
     try {
       const { msg, token, result, userID } = (await axios.post(`${url}login`, loginData)).data;
       if (result) {
-        // const loggedID = result.userID
-
         localStorage.setItem('userID', userID)
 
         commit("setUser", { result });
         commit("setUserID", userID);
-        // console.log("UserData: ", userID);
 
         cookies.set("loggedInUser", { token, result });
         authUser.applyToken(token);

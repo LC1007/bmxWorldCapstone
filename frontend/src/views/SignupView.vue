@@ -15,11 +15,7 @@
                           </div>
                           <div class="mb-3">
                             <label for="gender" class="form-label">Gender</label>
-                            <select class="form-select" aria-label="Default select example">
-                                <option selected>Open this select menu</option>
-                                <option value="1">Male</option>
-                                <option value="2">Female</option>
-                              </select>
+                            <input type="text" class="form-control" placeholder="Doe" v-model="formData.gender">
                           </div>
                           <div class="mb-3">
                             <label for="dob" class="form-label">Date of Birth</label>
@@ -56,16 +52,18 @@ import { mapActions } from 'vuex'
                 formData:{
                     firstName: '',
                     lastName: '',
+                    gender: '',
                     userDOB: '',
                     emailAdd: '',
-                    userPass: ''
+                    userPass: '',
+                    profileUrl: ''
                 }
             }
         },
         methods:{
-            ...mapActions(['submitContent']),
+            ...mapActions('usermodule',['submitSignup']),
             async createUser(){
-            await this.submitContent(this.formData)
+            await this.submitSignup(this.formData)
         }
         }
     }
