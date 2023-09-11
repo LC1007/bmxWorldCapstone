@@ -66,9 +66,8 @@ export default {
         add(){
             const cookieToken = cookies.get('loggedInUser')
             if(cookieToken){
-                const loggedInUserID = this.userID
-                const bmxID = this.bikeID
-    
+                const loggedInUserID = this.userID // This is coming from the state userID
+                const bmxID = this.bikeID // This is coming from the state bikeID
                 this.addToCart(loggedInUserID, bmxID)
             }
         },

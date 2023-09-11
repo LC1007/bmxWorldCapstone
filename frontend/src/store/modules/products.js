@@ -2,11 +2,13 @@ import axios from "axios"
 const url = "https://bmxcap.onrender.com/";
 
 const state = {
-  bikes: null,
+  bikes: [],
   selectedBike: null,
   prodDetails: null,
   cart: null,
-  bikeID: localStorage.getItem('bikeID') || null
+  bikeID: localStorage.getItem('bikeID') || null,
+  sortOrder: 'asc',
+  sortOption: 'amount'
 };
 
 const getters = {
@@ -19,23 +21,31 @@ const mutations = {
   setBikes(state, updatedBike) {
     state.bikes = updatedBike;
   },
-  setProdDetails(state, data){
-    state.prodDetails = data
+  setProdDetails(state, data) {
+    state.prodDetails = data;
   },
-  setSelectedBike(state, data){
+  setSelectedBike(state, data) {
     state.selectedBike = data;
   },
-  setCart(state, data){
-    state.cart = data
+  setCart(state, data) {
+    state.cart = data;
   },
-  setBikeID(state, data){
-    state.bikeID = data
+  setBikeID(state, data) {
+    state.bikeID = data;
   },
-  setUpdateBike(state, updatedBike){
-    const exisitingProdID = state.bikes.findIndex((bike) => bike.bmxID === updatedBike.bmxID)
-    if(exisitingProdID !== 1){
-      state.bikes[exisitingProdID] = updatedBike
+  setUpdateBike(state, updatedBike) {
+    const exisitingProdID = state.bikes.findIndex(
+      (bike) => bike.bmxID === updatedBike.bmxID
+    );
+    if (exisitingProdID !== 1) {
+      state.bikes[exisitingProdID] = updatedBike;
     }
+  },
+  setSortOrder(state, sortOrder) {
+    state.sortOrder = sortOrder;
+  },
+  setSortOption(state, option){
+    state.sortOption = option
   }
 };
 
@@ -44,7 +54,6 @@ const actions = {
     try {
       const { data } = await axios.get(`${url}products`);
       commit("setBikes", data.products);
-      // console.log("Products: ", data.products);
     } catch (error) {
       console.log("There was an error trying to fetch products:", error);
     }
@@ -58,7 +67,6 @@ const actions = {
 
       commit("setSelectedBike", data.result[0]);
       commit("setBikeID", data.ID);
-      // console.log("This is a test: ", data.result[0]);
       return data.result[0];
       
     } catch (error) {
@@ -73,12 +81,12 @@ const actions = {
     } catch (error) {}
   },
 
-  async updateBike({commit}, { bmxID, ...updatedFields }){
+  async updateBike({commit, dispatch}, { bmxID, ...updatedFields }){
     try {
       const updatedBike = { bmxID, ...updatedFields }
       const { data } = await axios.patch(`${url}product/${updatedBike.bmxID}`, updatedBike)
       commit('setBikes', data.products)
-      location.reload()
+      dispatch('fetchBikes')
     } catch (error) {
       console.log(error);
     }

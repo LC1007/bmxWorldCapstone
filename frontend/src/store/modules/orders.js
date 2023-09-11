@@ -20,7 +20,6 @@ const actions = {
             const userID = localStorage.getItem('userID')
             const { data } = await axios.get(`${url}orders/${userID}`);
             commit("setOrders", data.orders);
-            console.log(data.results);
         } catch (error) {
             console.log(error);
         }
