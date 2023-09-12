@@ -24,8 +24,8 @@
         <h1 class="text-center my-5">TOP PICKS</h1>  
         <div class="container">
           <div class="row my-5 g-2">
-            <div class="col" v-for="bike in bikes" :key="bike.bmxID">
-              <div class="card" style="width: 18rem">
+            <div class="col" v-for="bike in featuredBikes" :key="bike.bmxID">
+              <div class="card m-auto" style="width: 18rem">
                 <img :src="bike.prodUrl" class="card-img-top top-imgs" alt="">
                 <div class="card-body">
                   <h4 class="card-tite">{{ bike.prodName }}</h4>
@@ -45,16 +45,16 @@
       <div class="container">
         <div class="custom-grid">
           <div class="event-1">
-            <img src="https://i.postimg.cc/sgJKsQkg/pexels-zach-service-922936.jpg" class="w-100 custom-grid-img" alt="">
+            <img src="https://i.postimg.cc/bwq8dptX/yomex-owo-q-NJ-C49u-MH0-unsplash.jpg" class="w-100 custom-grid-img" alt="">
           </div>
           <div class="event-2">
-            <img src="https://i.postimg.cc/sgJKsQkg/pexels-zach-service-922936.jpg" class="w-100 custom-grid-img" alt="">
+            <img src="https://i.postimg.cc/cHdvLxHz/b-mat-an-gelo-t-YN9rm-SR24o-unsplash.jpg" class="w-100 custom-grid-img" alt="">
           </div>
           <div class="event-3">
-            <img src="https://i.postimg.cc/sgJKsQkg/pexels-zach-service-922936.jpg" class="w-100 custom-grid-img" alt="">
+            <img src="https://i.postimg.cc/Fz5pCJs6/rinke-dohmen-DC5-VX3awk-E-unsplash.jpg" class="w-100 custom-grid-img" alt="">
           </div>
           <div class="event-4">
-            <img src="https://i.postimg.cc/sgJKsQkg/pexels-zach-service-922936.jpg" class="w-100 custom-grid-img" alt="">
+            <img src="https://i.postimg.cc/nrKW4tfN/fachy-marin-0-HLGDvx-Vh8-E-unsplash.jpg" class="w-100 custom-grid-img" alt="">
           </div>
         </div>
       </div>
@@ -89,13 +89,13 @@ export default{
     Navbar
   },
   computed:{
-    ...mapState('products', ['bikes','selectedBike'])
+    ...mapState('products', ['selectedBike', 'featuredBikes'])
   },
   mounted(){
-    this.fetchBikes()
+    this.featuredProducts()
   },  
   methods:{
-    ...mapActions('products', ['fetchBikes', 'fetchBike'])
+    ...mapActions('products', ['fetchBike', 'featuredProducts'])
   }
 }
 </script>
@@ -127,25 +127,21 @@ export default{
 .event-1{
   grid-column: 1 / -1;
   grid-row: 1 / 7;
-  background-color: red;
 }
 
 .event-2{
   grid-column: 1 / 5;
   grid-row: 7 / -1;
-  background-color: blue;
 }
 
 .event-3{
   grid-column: 5 / 9;
   grid-row: 7 / -1;
-  background-color: crimson;
 }
 
 .event-4{
   grid-column: 9 / -1;
   grid-row: 7 / -1;
-  background-color: orangered;
 }
 
 @media only screen and (max-width: 400px) {

@@ -24,6 +24,9 @@
                           <div class="mb-3">
                             <label for="email" class="form-label">Email address</label>
                             <input type="email" class="form-control" placeholder="john@gmail.com" v-model="formData.emailAdd">
+                            <div v-if="errMsg">
+                                <p>{{ errMsg }}</p>
+                            </div>
                           </div>
                           <div class="mb-3">
                             <label for="password" class="form-label">Password</label>
@@ -45,7 +48,7 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapActions, mapState } from 'vuex'
     export default {
         data(){
             return{
@@ -59,6 +62,9 @@ import { mapActions } from 'vuex'
                     profileUrl: ''
                 }
             }
+        },
+        computed:{
+            ...mapState('usermodule', ['errMsg'])
         },
         methods:{
             ...mapActions('usermodule',['submitSignup']),

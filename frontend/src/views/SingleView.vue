@@ -68,6 +68,7 @@ export default {
             if(cookieToken){
                 const loggedInUserID = this.userID // This is coming from the state userID
                 const bmxID = this.bikeID // This is coming from the state bikeID
+                console.log(`orders/${this.userID}/${bmxID}`);
                 this.addToCart(loggedInUserID, bmxID)
             }
         },

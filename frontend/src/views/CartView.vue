@@ -101,6 +101,9 @@ export default {
     },
     mounted() {
         this.fetchOrders()
+    },
+    created(){
+        console.log("Orders: ",this.orders);
     }
 }
 </script>

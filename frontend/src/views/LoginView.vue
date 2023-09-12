@@ -13,6 +13,7 @@
                             <label for="password" class="form-label">Password</label>
                             <input type="password" class="form-control" v-model="loginData.userPass">
                           </div>
+                          <p>Don't have an account? <router-link to="/signup">Create one</router-link></p>
                           <div class="d-flex justify-content-center">
                             <button class="btn btn-dark">Submit</button>
                           </div>

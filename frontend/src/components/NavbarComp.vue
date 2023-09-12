@@ -16,25 +16,37 @@
                   <router-link to="/products" class="nav-link fw-bold">Products</router-link>
                 </li>
               <li class="nav-item">
-                <router-link to="/admin" class="nav-link fw-bold">Admin</router-link>
+                  <router-link to="/about" class="nav-link fw-bold">About Us</router-link>
+                </li>
+              <li class="nav-item">
+                  <router-link to="/events" class="nav-link fw-bold">Events</router-link>
+                </li>
+              <li class="nav-item">
+                <router-link to="/admin" v-if="isAdmin" class="nav-link fw-bold">Admin</router-link>
+              </li>
+              <!-- <li class="nav-item">
+                <router-link to="/test" class="nav-link fw-bold">Admin Test</router-link>
+              </li> -->
+            </ul>
+            <ul class="navbar-nav d-flex align-items-center">
+              <!-- <button class="btn" @click="logout" v-if="hasCookie">Logout</button> -->
+              <li class="nav-item">
+                <i class="bi bi-box-arrow-right nav-link" @click="logout" v-if="hasCookie"></i>
               </li>
               <li class="nav-item">
-                <router-link to="/test" class="nav-link fw-bold">Admin Test</router-link>
+                <router-link to="/profile" class="nav-link fw-bold" v-if="hasCookie"><i class="bi bi-person-circle"></i></router-link>
               </li>
               <li class="nav-item">
                 <router-link to="/login" v-if="!hasCookie" class="nav-link fw-bold">Login</router-link>
-              </li>
-              <button class="btn btn-dark" @click="logout" v-if="hasCookie">Logout</button>
-            </ul>
-            <ul class="navbar-nav">
-              <li class="nav-item">
-                <router-link to="/profile" class="nav-link fw-bold" v-if="hasCookie"><i class="bi bi-person-circle"></i></router-link>
               </li>
               <li class="nav-item">
                   <router-link to="/signup" class="nav-link fw-bold" v-if="!hasCookie">Sign Up</router-link>
                 </li>
               <li class="nav-item">
-                <router-link to="/cart" class="nav-link"><i class="bi bi-basket"></i></router-link>
+                <router-link to="/cart" class="nav-link" v-if="hasCookie"><i class="bi bi-basket"></i></router-link>
+              </li>
+              <li class="nav-item" v-if="user">
+                <p class="nav-link m-0">Welcome, {{ user.firstName }}</p>
               </li>
             </ul>
           </div>
@@ -49,30 +61,36 @@
     </div>
   </template>
   
-  <script>
+<script>
 import { useCookies } from 'vue3-cookies'
+import { mapActions, mapState } from 'vuex'
 const { cookies } = useCookies()
   export default {
     computed:{
       user(){
-        return this.$store.state.user || cookies.get('loggedInUser')
-      },
-      result(){
-        return this.user?.result
+        return this.$store.state.usermodule.user || cookies.get('loggedInUser')
       },
       isAdmin(){
-        return this.result?.userRole?.toLowerCase() === 'admin'
+        return this.user?.userRole?.toLowerCase() === 'admin'
       },
       hasCookie(){
         return cookies.get('loggedInUser') !== null
       }
     },
     methods:{
+      ...mapActions('usermodule',['fetchUser']),
       logout(){
         console.log(cookies.remove('loggedInUser'));
         localStorage.removeItem('userID')
         location.reload()
       }
+    },
+    created() {
+        const userID = localStorage.getItem('userID')
+
+        if (userID) {
+            this.fetchUser(userID)
+        }
     }
   }
   </script>

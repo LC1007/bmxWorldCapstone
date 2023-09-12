@@ -3,6 +3,7 @@ const url = "https://bmxcap.onrender.com/";
 
 const state = {
   bikes: [],
+  featuredBikes: null,
   selectedBike: null,
   prodDetails: null,
   cart: null,
@@ -20,6 +21,9 @@ const getters = {
 const mutations = {
   setBikes(state, updatedBike) {
     state.bikes = updatedBike;
+  },
+  setFeaturedBikes(state, data){
+    state.featuredBikes = data
   },
   setProdDetails(state, data) {
     state.prodDetails = data;
@@ -97,11 +101,32 @@ const actions = {
       const bmxID = localStorage.getItem('bikeID')
       const { data } = await axios.post(`${url}order/${loggedInUserID}/${bmxID}`);
       commit("setCart", data);
-      console.log(data);
+      console.log(data.result);
     } catch (error) {
       console.log(error);
     }
   },
+
+  // Sort/Search/Filter
+
+  // async searchProds({commit}, prodName){
+  //   try {
+  //     const { data } = await axios.get(`${url}products/search/${prodName}`)
+  //     commit('setSearchBikes', data.product)
+  //     console.log(data.product);
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // }
+
+  async featuredProducts({commit}){
+    try {
+      const { data } = await axios.get(`${url}products/featured`)
+      commit('setFeaturedBikes', data.products)
+    } catch (error) {
+      console.log(error);
+    }
+  }
 };
 
 export default {

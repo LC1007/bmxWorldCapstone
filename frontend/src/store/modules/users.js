@@ -10,7 +10,8 @@ const url = "https://bmxcap.onrender.com/";
 const state = {
     users: null,
     user: null,
-    userID: localStorage.getItem('userID') || null 
+    userID: localStorage.getItem('userID') || null,
+    errMsg: null
 }
 
 const mutations = {
@@ -23,6 +24,9 @@ const mutations = {
   setUserID(state, userID) {
     state.userID = userID;
   },
+  setErrMsg(state, data){
+    state.errMsg = data
+  }
 };
 
 const actions = {
@@ -46,25 +50,22 @@ const actions = {
 
   async submitSignup({commit}, formData){
     try {
-      const { data, msg, token,  } = await axios.post(`${url}register`, formData)
+      const { data, msg, token, existingUser  } = await axios.post(`${url}register`, formData)
+      // const err = existingUser.errMsg
+      // console.log(err);
       if(data){
         commit('setUser', { data, token })
+        console.log(msg);
         sweet({
           title: 'Account Created',
           text: msg,
           icon: 'success',
           timer: 4000
         })
-      } else{
-        sweet({
-          title: 'Error',
-          text: msg,
-          icon: 'error',
-          timer: 4000
-        })
-      }
-    } catch (error) {
+      } 
       
+    } catch (error) {
+      console.log(error);
     }
   },
 
@@ -76,6 +77,8 @@ const actions = {
 
         commit("setUser", { result });
         commit("setUserID", userID);
+
+        console.log(result);
 
         cookies.set("loggedInUser", { token, result });
         authUser.applyToken(token);
@@ -89,7 +92,7 @@ const actions = {
       } else {
         sweet({
           title: 'Error',
-          text: msg,
+          errMsg: errMsg,
           icon: 'error',
           timer: 4000
         })

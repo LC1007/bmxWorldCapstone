@@ -45,6 +45,7 @@
 <script>
 import Navbar from '@/components/NavbarComp.vue'
 import { mapActions } from 'vuex'
+import router from '@/router'
 export default {
     data() {
         return {
@@ -66,7 +67,7 @@ export default {
         createProdForm(){
             try {
                 this.createProd(this.addProd)
-                console.log('worked');
+                router.push({name: 'products'})
             } catch (error) {
                 console.log(error);
             }

@@ -39,12 +39,26 @@
                         <template v-else>
                             <p>{{ user.emailAdd }}</p>
                         </template>
+                        <h4>Gender:</h4>
+                    <template v-if="user.isEdit">
+                            <input type="text" class="my-2 form-control" v-model="user.gender" name="" id="">
+                        </template>
+                        <template v-else>
+                            <p>{{ user.gender }}</p>
+                        </template>
                     <h4>Profile Image:</h4>
                     <template v-if="user.isEdit">
                             <input type="text" class="my-2 form-control" v-model="user.profileUrl" name="" id="">
                         </template>
                         <template v-else>
                             <p>{{ user.profileUrl }}</p>
+                        </template>
+                        <h4>Role:</h4>
+                    <template v-if="user.isEdit">
+                            <input type="text" class="my-2 form-control" v-model="user.userRole" name="" id="">
+                        </template>
+                        <template v-else>
+                            <p>{{ user.userRole }}</p>
                         </template>
                     <template v-if="!user.isEdit">
                         <div>

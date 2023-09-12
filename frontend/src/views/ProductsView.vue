@@ -1,33 +1,22 @@
 <template>
     <div>
         <Navbar />
-        <div class="d-flex justify-content-between align-items-center">
+        <div class="d-flex d-sm-flex justify-content-between align-items-center">
             <h1 class="m-5">PRODUCTS</h1>
-            <div class="me-5 d-flex">
-                <input type="text" class="form-control p-2 w-100 h-100 me-2" placeholder="search product">
+            <div class="me-5 d-flex w-25">
                 <button class="btn btn-dark h-100 w-100 me-2" @click="sortBikes('amount')">Sort By Name</button>
                 <button class="btn btn-dark h-100 w-100 me-2" @click="sortBikes('prodName')">Sort By Price</button>
             </div>
         </div>
         <div class="container">
             <div class="row">
-                <!-- <div class="col mb-5 d-flex" v-for="bike in bikes" :key="bike.bmxID">
-                    <div class="card border-0 m-auto" style="width: 18rem;">
-                        <img :src="bike.prodUrl" class="card-img-top pb-2 rounded-0" alt="...">
-                        <div class="card-body p-0">
-                            <h5 class="fw-normal">{{ bike.prodName }}</h5>
-                            <p>R{{ bike.amount }}</p>
-                            <button class="btn btn-dark"><i class="bi bi-cart"></i></button>
-                        </div>
-                    </div>
-                </div> -->
                 <div class="col mb-5 d-flex" v-for="bike in sortedBikes" :key="bike.bmxID">
                         <div class="card border-0 m-auto" style="width: 18rem;">
                             <img :src="bike.prodUrl" class="card-img-top pb-2 rounded-0" alt="...">
                             <div class="card-body p-0">
                                 <h5 class="fw-normal">{{ bike.prodName }}</h5>
                                 <p>R{{ bike.amount }}</p>
-                                <button class="btn btn-dark"><i class="bi bi-cart"></i></button>
+                                <button class="btn btn-dark" @click="addProd(bike.bmxID)"><i class="bi bi-cart"></i></button>
                             </div>
                         </div>
                     </div>
@@ -37,25 +26,25 @@
 </template>
 
 <script>
+import { useCookies } from "vue3-cookies";
 import Navbar from '@/components/NavbarComp.vue'
 import { mapActions, mapState } from 'vuex'
+
+const { cookies } = useCookies();
 export default {
     components: {
         Navbar
     },
+    data(){
+        return{
+            searchTerm:{
+                prodName: ''
+            }
+        }
+    },
     computed: {
         ...mapState('products', ['bikes', 'sortOrder', 'sortOption']),
-        // sortedBikes(){
-        //     const sorted = [...this.bikes]
-
-        //     if(this.sortOrder === 'asc'){
-        //         sorted.sort((a, b) => a.amount - b.amount)
-        //     } else if(this.sortOrder === 'desc'){
-        //         sorted.sort((a, b) => b.amount - a.amount)
-        //     }
-
-        //     return sorted
-        // }
+        ...mapState('usermodule', ['userID']),
 
         sortedBikes(){
             const sortingFunc = (a, b) =>{
@@ -72,10 +61,21 @@ export default {
         }
     },
     methods: {
-        ...mapActions('products', ['fetchBikes']),
+        ...mapActions('products', ['fetchBikes', 'searchProds', 'addToCart']),
         sortBikes(){
             const option = this.sortOption === 'amount' ? 'prodName' : 'amount'
             this.$store.commit('products/setSortOption', option)
+        },
+
+        addProd(bike){
+            const cookieToken = cookies.get('loggedInUser')
+            if(cookieToken){
+                const loggedInUserID = this.userID // This is coming from the state userID
+                const bmxID = bike
+                // const bmxID = this.bikeID // This is coming from the state bikeID
+                console.log(`order/${this.userID}/${bmxID}`);
+                this.addToCart(loggedInUserID, this.bike)
+            }
         }
     },
     mounted() {
