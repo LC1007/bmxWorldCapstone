@@ -4,6 +4,7 @@
         <div class="d-flex d-sm-flex justify-content-between align-items-center">
             <h1 class="m-5">PRODUCTS</h1>
             <div class="me-5 d-flex w-25">
+                <input type="text" class="form-control me-2" v-model="searchQuery" @input="searchBikes" placeholder="BMX">
                 <button class="btn btn-dark h-100 w-100 me-2" @click="sortBikes('amount')">Sort By Name</button>
                 <button class="btn btn-dark h-100 w-100 me-2" @click="sortBikes('prodName')">Sort By Price</button>
             </div>
@@ -45,7 +46,6 @@ export default {
     computed: {
         ...mapState('products', ['bikes', 'sortOrder', 'sortOption']),
         ...mapState('usermodule', ['userID']),
-
         sortedBikes(){
             const sortingFunc = (a, b) =>{
                 if(this.sortOption === 'amount'){
@@ -61,7 +61,7 @@ export default {
         }
     },
     methods: {
-        ...mapActions('products', ['fetchBikes', 'searchProds', 'addProductToCart']),
+        ...mapActions('products', ['fetchBikes', 'searchProds', 'addProductToCart', 'searchProd']),
         sortBikes(){
             const option = this.sortOption === 'amount' ? 'prodName' : 'amount'
             this.$store.commit('products/setSortOption', option)
@@ -74,6 +74,10 @@ export default {
                 console.log(`order/${loggedInUserID}/${bike}`);
                 this.addProductToCart({loggedInUserID, bmxID: bike})
             }
+        },
+
+        searchBikes(){
+            this.searchProd(this.searchQuery)
         }
     },
     mounted() {
