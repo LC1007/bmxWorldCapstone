@@ -61,7 +61,7 @@ export default {
         }
     },
     methods: {
-        ...mapActions('products', ['fetchBikes', 'searchProds', 'addToCart']),
+        ...mapActions('products', ['fetchBikes', 'searchProds', 'addProductToCart']),
         sortBikes(){
             const option = this.sortOption === 'amount' ? 'prodName' : 'amount'
             this.$store.commit('products/setSortOption', option)
@@ -70,11 +70,9 @@ export default {
         addProd(bike){
             const cookieToken = cookies.get('loggedInUser')
             if(cookieToken){
-                const loggedInUserID = this.userID // This is coming from the state userID
-                const bmxID = bike
-                // const bmxID = this.bikeID // This is coming from the state bikeID
-                console.log(`order/${this.userID}/${bmxID}`);
-                this.addToCart(loggedInUserID, this.bike)
+                const loggedInUserID = this.userID 
+                console.log(`order/${loggedInUserID}/${bike}`);
+                this.addProductToCart({loggedInUserID, bmxID: bike})
             }
         }
     },

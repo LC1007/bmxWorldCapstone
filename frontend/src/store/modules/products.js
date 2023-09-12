@@ -5,11 +5,12 @@ const state = {
   bikes: [],
   featuredBikes: null,
   selectedBike: null,
+  selectedBikeEdit: null,
   prodDetails: null,
   cart: null,
-  bikeID: localStorage.getItem('bikeID') || null,
-  sortOrder: 'asc',
-  sortOption: 'amount'
+  bikeID: localStorage.getItem("bikeID") || null,
+  sortOrder: "asc",
+  sortOption: "amount",
 };
 
 const getters = {
@@ -30,6 +31,9 @@ const mutations = {
   },
   setSelectedBike(state, data) {
     state.selectedBike = data;
+  },
+  setSelectedBikeEdit(state, data){
+    state.selectedBikeEdit = data
   },
   setCart(state, data) {
     state.cart = data;
@@ -70,9 +74,9 @@ const actions = {
       localStorage.setItem("bikeID", data.ID);
 
       commit("setSelectedBike", data.result[0]);
+      commit("setSelectedBikeEdit", data.result[0]);
       commit("setBikeID", data.ID);
       return data.result[0];
-      
     } catch (error) {
       console.log(error);
     }
@@ -85,21 +89,37 @@ const actions = {
     } catch (error) {}
   },
 
-  async updateBike({commit, dispatch}, { bmxID, ...updatedFields }){
+  async updateBike({ commit, dispatch }, bike) {
     try {
-      const updatedBike = { bmxID, ...updatedFields }
-      const { data } = await axios.patch(`${url}product/${updatedBike.bmxID}`, updatedBike)
-      commit('setBikes', data.products)
-      dispatch('fetchBikes')
+      const { data } = await axios.patch(`${url}product/${bike.bmxID}`, bike);
+      commit("setBikes", data.products);
+      dispatch("fetchBikes");
     } catch (error) {
       console.log(error);
     }
   },
 
+  // Single product add to cart
   async addToCart({ commit }, loggedInUserID) {
     try {
-      const bmxID = localStorage.getItem('bikeID')
-      const { data } = await axios.post(`${url}order/${loggedInUserID}/${bmxID}`);
+      const bmxID = localStorage.getItem("bikeID");
+      const { data } = await axios.post(
+        `${url}order/${loggedInUserID}/${bmxID}`
+      );
+      commit("setCart", data);
+      console.log(data.result);
+    } catch (error) {
+      console.log(error);
+    }
+  },
+
+  // All products add to cart
+  async addProductToCart({ commit }, {loggedInUserID, bmxID}) {
+    try {
+      console.log("Store:", bmxID, loggedInUserID);
+      const { data } = await axios.post(
+        `${url}order/${loggedInUserID}/${bmxID}`
+      );
       commit("setCart", data);
       console.log(data.result);
     } catch (error) {
@@ -109,24 +129,14 @@ const actions = {
 
   // Sort/Search/Filter
 
-  // async searchProds({commit}, prodName){
-  //   try {
-  //     const { data } = await axios.get(`${url}products/search/${prodName}`)
-  //     commit('setSearchBikes', data.product)
-  //     console.log(data.product);
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // }
-
-  async featuredProducts({commit}){
+  async featuredProducts({ commit }) {
     try {
-      const { data } = await axios.get(`${url}products/featured`)
-      commit('setFeaturedBikes', data.products)
+      const { data } = await axios.get(`${url}products/featured`);
+      commit("setFeaturedBikes", data.products);
     } catch (error) {
       console.log(error);
     }
-  }
+  },
 };
 
 export default {

@@ -80,7 +80,7 @@ const { cookies } = useCookies()
     methods:{
       ...mapActions('usermodule',['fetchUser']),
       logout(){
-        console.log(cookies.remove('loggedInUser'));
+        cookies.remove('loggedInUser');
         localStorage.removeItem('userID')
         location.reload()
       }

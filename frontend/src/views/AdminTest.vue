@@ -4,7 +4,8 @@
             <h1>Products</h1>
             <button class="btn btn-dark"><i class="bi bi-plus pe-2" style="font-size: 1rem"></i>Create Product</button>
         </div>
-
+        <p>test</p>
+        
         <div class="row">
             <div class="col" v-for="bike in bikes" :key="bike.bmxID">
                 <div class="card custom-card h-100 w-100" style="width: 14rem;">

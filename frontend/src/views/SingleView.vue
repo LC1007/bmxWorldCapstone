@@ -71,6 +71,10 @@ export default {
                 console.log(`orders/${this.userID}/${bmxID}`);
                 this.addToCart(loggedInUserID, bmxID)
             }
+
+            if(!cookieToken){
+                alert('Please sign in')
+            }
         },
 
     }
@@ -91,5 +95,11 @@ export default {
 i {
     font-size: 2rem;
     cursor: pointer;
+}
+
+.custom-message{
+    aspect-ratio: 1 / 1;
+    background-color: red;
+    width: 10rem;
 }
 </style>
