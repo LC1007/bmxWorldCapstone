@@ -61,23 +61,24 @@ const mutations = {
 const actions = {
   async fetchBikes({ commit }) {
     try {
-      const { data } = await axios.get(`${url}products`);
-      commit("setBikes", data.products);
+      const { products } = (await axios.get(`${url}products`)).data;
+      commit("setBikes", products);
     } catch (error) {
       console.log("There was an error trying to fetch products:", error);
+      router.push({name: 'login'})
     }
   },
 
   async fetchBike({ commit }, bmxID) {
     try {
-      const { data } = await axios.get(`${url}product/${bmxID}`);
+      const { result } = (await axios.get(`${url}product/${bmxID}`)).data;
 
-      localStorage.setItem("bikeID", data.ID);
+      localStorage.setItem("bikeID", result.ID);
 
-      commit("setSelectedBike", data.result[0]);
-      commit("setSelectedBikeEdit", data.result[0]);
-      commit("setBikeID", data.ID);
-      return data.result[0];
+      commit("setSelectedBike", result[0]);
+      commit("setSelectedBikeEdit", result[0]);
+      commit("setBikeID", ID);
+      return result[0];
     } catch (error) {
       console.log(error);
     }
@@ -92,8 +93,8 @@ const actions = {
 
   async updateBike({ commit, dispatch }, bike) {
     try {
-      const { data } = await axios.patch(`${url}product/${bike.bmxID}`, bike);
-      commit("setBikes", data.products);
+      const { products } = (await axios.patch(`${url}product/${bike.bmxID}`, bike)).data;
+      commit("setBikes", products);
       dispatch("fetchBikes");
       router.push({name: 'admin'})
     } catch (error) {

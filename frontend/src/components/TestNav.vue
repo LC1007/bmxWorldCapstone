@@ -30,8 +30,8 @@
                     </li>
                     <div class="d-sm-flex d-lg-flex align-items-lg-center align-items-sm-start">
                         <li class="nav-item">
-                            <router-link to="/login" v-if="hasCookie" class="nav-link pe-2 ">Logout</router-link>
-                          </li>
+                  <button class="btn" @click="logout" v-if="hasCookie">Logout</button>
+                </li>
                         <li class="nav-item">
                             <router-link to="/cart" class="nav-link" v-if="hasCookie"><i class="bi bi-bag-fill pe-2"></i></router-link>
                           </li>

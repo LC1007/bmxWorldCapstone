@@ -11,6 +11,7 @@ const state = {
     users: null,
     user: null,
     userID: localStorage.getItem('userID') || null,
+    successMsg: null,
     errMsg: null
 }
 
@@ -24,8 +25,15 @@ const mutations = {
   setUserID(state, userID) {
     state.userID = userID;
   },
-  setErrMsg(state, data){
-    state.errMsg = data
+  setErrMsg(state, errMsg){
+    state.errMsg = errMsg;
+  },
+  setSuccessMsg(state, msg){
+    state.successMsg = msg
+  },
+  clearMessages(state){
+    state.successMsg = null
+    state.errMsg = null
   }
 };
 
@@ -39,47 +47,45 @@ const actions = {
     }
   },
 
-  async fetchUser({commit}, userID){
+  async fetchUser({ commit }, userID) {
     try {
-      const { data } = await axios.get(`${url}user/${userID}`)
-      commit('setUser', data.user[0])
+      const { data } = await axios.get(`${url}user/${userID}`);
+      commit("setUser", data.user[0]);
     } catch (error) {
       console.log("There was an error trying to fetch user with ID:", userID);
     }
   },
 
-  async submitSignup({ dispatch}, formData){
+  async submitSignup({commit, dispatch}, formData){
     try {
-      const { msg, errMsg } = (await axios.post(`${url}register`, formData)).data
+      const { msg } = (await axios.post(`${url}register`, formData)).data
 
-      if(msg){
+      if (msg) {
         sweet({
-          title: 'Account Created',
+          title: "Account Created",
           text: msg,
-          icon: 'success',
-          timer: 4000
-        })
-        dispatch('fetchUsers')
-        router.push({name: 'login'})
-      } else{
-        sweet({
-          title: 'Failed',
-          text: errMsg,
-          icon: 'error',
-          timer: 4000
-        })
+          icon: "success",
+          timer: 4500,
+        });
+        dispatch("fetchUsers");
+        router.push({ name: "login" });
       }
-      
     } catch (error) {
-      console.log(error);
+      sweet({
+        title: "A user with this email already exists",
+        icon: "error",
+        timer: 4500,
+      });
     }
   },
 
   async submitLogin({ commit }, loginData) {
     try {
-      const { msg, token, result, userID, errMsg } = (await axios.post(`${url}login`, loginData)).data;
+      const { msg, token, result, userID, errMsg } = (
+        await axios.post(`${url}login`, loginData)
+      ).data;
       if (result) {
-        localStorage.setItem('userID', userID)
+        localStorage.setItem("userID", userID);
 
         commit("setUser", { result });
         commit("setUserID", userID);
@@ -89,19 +95,19 @@ const actions = {
         cookies.set("loggedInUser", { token, result });
         authUser.applyToken(token);
         sweet({
-          title: 'Login',
+          title: "Login",
           text: msg,
-          icon: 'success',
-          timer: 4000
-        })
+          icon: "success",
+          timer: 4000,
+        });
         router.push({ name: "home" });
       } else {
         sweet({
-          title: 'Error',
+          title: "Error",
           errMsg: errMsg,
-          icon: 'error',
-          timer: 4000
-        })
+          icon: "error",
+          timer: 4000,
+        });
       }
     } catch (error) {
       console.log(error);

@@ -4,13 +4,16 @@
         <div class="d-flex d-sm-flex justify-content-between align-items-center">
             <h1 class="m-5">PRODUCTS</h1>
             <div class="me-5 d-flex w-50">
-                <input type="text" class="form-control h-100 me-2" v-model="searchQuery" @input="searchBikes" placeholder="BMX">
+                <div class="custom-group">
+                    <input type="text" class="form-control h-100 me-2 custom-input" v-model="searchQuery"  @input="searchBikes" placeholder="BMX">
+                    <i class="bi bi-x-circle custom-icon" @click="clear"></i>
+                </div>
                 <button class="btn btn-dark w-100 h-100 me-2" @click="sortBikes('amount')">Sort By Name</button>
                 <button class="btn btn-dark w-100 h-100 me-2" @click="sortBikes('prodName')">Sort By Price</button>
             </div>
         </div>
         <div class="container">
-            <div class="row" v-if="sortedBikes">
+            <div class="row" v-if="sortedBikes.length">
                 <div class="col mb-5 d-flex" v-for="bike in sortedBikes" :key="bike.bmxID">
                         <div class="card border-0 m-auto" style="width: 18rem;">
                             <img :src="bike.prodUrl" class="card-img-top pb-2 rounded-0" alt="...">
@@ -36,7 +39,7 @@
 <script>
 import { useCookies } from "vue3-cookies";
 import Navbar from '@/components/TestNav.vue'
-import { mapActions, mapState } from 'vuex'
+import { mapActions, mapState, mapMutations } from 'vuex'
 
 const { cookies } = useCookies();
 export default {
@@ -70,7 +73,8 @@ export default {
         }
     },
     methods: {
-        ...mapActions('products', ['fetchBikes', 'searchProds', 'addProductToCart', 'searchProd']),
+        ...mapActions('products', ['fetchBikes', 'addProductToCart', 'searchProd']),
+
         sortBikes(){
             const option = this.sortOption === 'amount' ? 'prodName' : 'amount'
             this.$store.commit('products/setSortOption', option)
@@ -86,6 +90,11 @@ export default {
 
         searchBikes(){
             this.searchProd(this.searchQuery)
+        },
+
+        clear(){
+            this.searchQuery = ''
+            this.fetchBikes()
         }
     },
     mounted() {
@@ -99,5 +108,34 @@ img {
     aspect-ratio: 1 / 1;
     object-fit: contain;
     width: 100%;
+}
+
+.custom-group{
+    width: 500px;
+    position: relative;
+    margin-right: 1rem;
+}
+
+.custom-input{
+     margin: 0px;
+        padding: 0px;
+        width: 100%;
+        outline: none;
+        height: 30px;
+        border-radius: 5px;
+}
+
+.custom-icon{
+     position: absolute;
+        top: 0;
+        border-radius: 5px;
+        right: 6px;
+        z-index: 2;
+        border: none;
+        top: 6px;
+        height: 30px;
+        cursor: pointer;
+        color: #000;
+        transform: translateX(2px);
 }
 </style>

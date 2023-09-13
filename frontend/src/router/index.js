@@ -28,6 +28,11 @@ const routes = [
     path: "/products",
     name: "products",
     component: () => import("../views/ProductsView.vue"),
+    // beforeEnter: () => {
+    //   if (!cookies.get("loggedInUser")) {
+    //     router.push({ name: "login" });
+    //   }
+    // },
   },
   {
     path: "/product/:bmxID",
