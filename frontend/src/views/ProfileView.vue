@@ -14,7 +14,7 @@
         <div class="container mb-5">
             <div class="row" v-if="user">
                 <div class="col h-100">
-                    <img src="https://pixlok.com/wp-content/uploads/2022/02/Profile-Icon-SVG-09856789.png" class="w-50"
+                    <img :src="user.profileUrl" class="w-50"
                         alt="">
                 </div>
                 <div class="col h-100">
@@ -53,13 +53,6 @@
                         <template v-else>
                             <p>{{ user.profileUrl }}</p>
                         </template>
-                        <h4>Role:</h4>
-                    <template v-if="user.isEdit">
-                            <input type="text" class="my-2 form-control" v-model="user.userRole" name="" id="">
-                        </template>
-                        <template v-else>
-                            <p>{{ user.userRole }}</p>
-                        </template>
                     <template v-if="!user.isEdit">
                         <div>
                             <button class="btn my-2 " @click="startEdit(user)">
@@ -93,7 +86,7 @@
 </template>
 
 <script>
-import Navbar from '@/components/NavbarComp.vue'
+import Navbar from '@/components/TestNav.vue'
 import { mapActions, mapState } from 'vuex'
 export default {
     components: {

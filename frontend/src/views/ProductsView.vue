@@ -3,14 +3,14 @@
         <Navbar />
         <div class="d-flex d-sm-flex justify-content-between align-items-center">
             <h1 class="m-5">PRODUCTS</h1>
-            <div class="me-5 d-flex w-25">
-                <input type="text" class="form-control me-2" v-model="searchQuery" @input="searchBikes" placeholder="BMX">
-                <button class="btn btn-dark h-100 w-100 me-2" @click="sortBikes('amount')">Sort By Name</button>
-                <button class="btn btn-dark h-100 w-100 me-2" @click="sortBikes('prodName')">Sort By Price</button>
+            <div class="me-5 d-flex w-50">
+                <input type="text" class="form-control h-100 me-2" v-model="searchQuery" @input="searchBikes" placeholder="BMX">
+                <button class="btn btn-dark w-100 h-100 me-2" @click="sortBikes('amount')">Sort By Name</button>
+                <button class="btn btn-dark w-100 h-100 me-2" @click="sortBikes('prodName')">Sort By Price</button>
             </div>
         </div>
         <div class="container">
-            <div class="row">
+            <div class="row" v-if="sortedBikes">
                 <div class="col mb-5 d-flex" v-for="bike in sortedBikes" :key="bike.bmxID">
                         <div class="card border-0 m-auto" style="width: 18rem;">
                             <img :src="bike.prodUrl" class="card-img-top pb-2 rounded-0" alt="...">
@@ -22,13 +22,20 @@
                         </div>
                     </div>
             </div>
+            <div  v-else>
+                <div class="d-flex justify-content-center w-100">
+                    <div class="spinner-border" role="status">
+                      <span class="visually-hidden">Loading...</span>
+                    </div>
+                  </div>
+            </div>
         </div>
     </div>
 </template>
 
 <script>
 import { useCookies } from "vue3-cookies";
-import Navbar from '@/components/NavbarComp.vue'
+import Navbar from '@/components/TestNav.vue'
 import { mapActions, mapState } from 'vuex'
 
 const { cookies } = useCookies();
@@ -51,7 +58,9 @@ export default {
                 if(this.sortOption === 'amount'){
                     return this.sortOrder === 'asc' ? a.amount - b.amount : b.amount - a.amount
                 } else if(this.sortOption === 'prodName'){
-                    return this.sortOrder === 'asc' ? a.prodName.localeCompare(b.prodName) : b.prodName.localeCompare(a.prodName)
+                    return this.sortOrder === 'asc' ? 
+                    a.prodName.localeCompare(b.prodName) : 
+                    b.prodName.localeCompare(a.prodName)
                 }
 
                 return 0
@@ -71,7 +80,6 @@ export default {
             const cookieToken = cookies.get('loggedInUser')
             if(cookieToken){
                 const loggedInUserID = this.userID 
-                console.log(`order/${loggedInUserID}/${bike}`);
                 this.addProductToCart({loggedInUserID, bmxID: bike})
             }
         },

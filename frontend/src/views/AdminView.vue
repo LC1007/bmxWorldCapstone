@@ -133,7 +133,7 @@
 </template>
 
 <script>
-import Navbar from '@/components/NavbarComp.vue'
+import Navbar from '@/components/TestNav.vue'
 import { mapActions, mapState } from 'vuex'
 
 export default {

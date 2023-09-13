@@ -1,4 +1,5 @@
 import axios from "axios"
+import router from '@/router'
 const url = "https://bmxcap.onrender.com/";
 
 const state = {
@@ -94,6 +95,7 @@ const actions = {
       const { data } = await axios.patch(`${url}product/${bike.bmxID}`, bike);
       commit("setBikes", data.products);
       dispatch("fetchBikes");
+      router.push({name: 'admin'})
     } catch (error) {
       console.log(error);
     }
@@ -103,9 +105,7 @@ const actions = {
   async addToCart({ commit }, loggedInUserID) {
     try {
       const bmxID = localStorage.getItem("bikeID");
-      const { data } = await axios.post(
-        `${url}order/${loggedInUserID}/${bmxID}`
-      );
+      const { data } = await axios.post(`${url}order/${loggedInUserID}/${bmxID}`);
       commit("setCart", data);
       console.log(data.result);
     } catch (error) {
@@ -117,9 +117,7 @@ const actions = {
   async addProductToCart({ commit }, {loggedInUserID, bmxID}) {
     try {
       console.log("Store:", bmxID, loggedInUserID);
-      const { data } = await axios.post(
-        `${url}order/${loggedInUserID}/${bmxID}`
-      );
+      const { data } = await axios.post(`${url}order/${loggedInUserID}/${bmxID}`);
       commit("setCart", data);
       console.log(data.result);
     } catch (error) {

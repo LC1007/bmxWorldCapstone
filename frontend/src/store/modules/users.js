@@ -48,21 +48,27 @@ const actions = {
     }
   },
 
-  async submitSignup({commit}, formData){
+  async submitSignup({ dispatch}, formData){
     try {
-      const { data, msg, token, existingUser  } = await axios.post(`${url}register`, formData)
-      // const err = existingUser.errMsg
-      // console.log(err);
-      if(data){
-        commit('setUser', { data, token })
-        console.log(msg);
+      const { msg, errMsg } = (await axios.post(`${url}register`, formData)).data
+
+      if(msg){
         sweet({
           title: 'Account Created',
           text: msg,
           icon: 'success',
           timer: 4000
         })
-      } 
+        dispatch('fetchUsers')
+        router.push({name: 'login'})
+      } else{
+        sweet({
+          title: 'Failed',
+          text: errMsg,
+          icon: 'error',
+          timer: 4000
+        })
+      }
       
     } catch (error) {
       console.log(error);
@@ -71,7 +77,7 @@ const actions = {
 
   async submitLogin({ commit }, loginData) {
     try {
-      const { msg, token, result, userID } = (await axios.post(`${url}login`, loginData)).data;
+      const { msg, token, result, userID, errMsg } = (await axios.post(`${url}login`, loginData)).data;
       if (result) {
         localStorage.setItem('userID', userID)
 

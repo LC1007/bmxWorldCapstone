@@ -23,7 +23,7 @@
       <section>
         <h1 class="text-center my-5">TOP PICKS</h1>  
         <div class="container">
-          <div class="row my-5 g-2">
+          <div class="row my-5 g-2" v-if="featuredBikes">
             <div class="col" v-for="bike in featuredBikes" :key="bike.bmxID">
               <div class="card m-auto" style="width: 18rem">
                 <img :src="bike.prodUrl" class="card-img-top top-imgs" alt="">
@@ -32,6 +32,13 @@
                   <p class="card-text">{{ bike.amount }}</p>
                   <router-link :to="'/product/' + bike.bmxID"><button class="btn btn-dark">View More</button></router-link>
                 </div>
+              </div>
+            </div>
+          </div>
+          <div v-else>
+            <div class="d-flex justify-content-center w-100">
+              <div class="spinner-border" role="status">
+                <span class="visually-hidden">Loading...</span>
               </div>
             </div>
           </div>
@@ -81,7 +88,7 @@
 </template>
 
 <script>
-import Navbar from '@/components/NavbarComp.vue'
+import Navbar from '@/components/TestNav.vue'
 import { mapActions, mapState } from 'vuex'
 
 export default{
