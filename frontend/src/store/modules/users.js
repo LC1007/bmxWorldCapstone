@@ -34,6 +34,12 @@ const mutations = {
   clearMessages(state){
     state.successMsg = null
     state.errMsg = null
+  },
+  setUpdateUser(state, updatedUser){
+    const exisitingUserID = state.users.findIndex((user) => user.userID === updatedUser.userID)
+    if(exisitingUserID !== 1){
+      state.users[exisitingUserID] = updatedUser
+    }
   }
 };
 

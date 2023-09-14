@@ -65,8 +65,8 @@ const routes = [
     component: () => import("../views/TestAdmin.vue"),
   },
   {
-    path: "/createprod",
-    name: "createprod",
+    path: "/product/create",
+    name: "create",
     component: () => import("../components/CreateProdComp.vue"),
   },
   {
@@ -78,6 +78,11 @@ const routes = [
     path: "/product/edit/:bmxID",
     name: "editprod",
     component: () => import("../components/ProductEdit.vue"),
+  },
+  {
+    path: "/user/edit/:userID",
+    name: "edituser",
+    component: () => import("../components/UserEdit.vue"),
   },
 ];
 

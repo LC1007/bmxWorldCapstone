@@ -5,7 +5,7 @@
         <div class="container">
             <div class="d-flex justify-content-between my-5">
                 <h1>Products</h1>
-                <router-link to="/createprod" class="btn btn-dark h-100"><i class="bi bi-plus pe-2"
+                <router-link to="/product/create" class="btn btn-dark h-100"><i class="bi bi-plus pe-2"
                         style="font-size: 1rem"></i>Create Product</router-link>
             </div>
 
@@ -70,13 +70,13 @@
                 <div class="col-12 col-lg-3 col-md-6 g-3 custom-grid mb-5" v-for="user in users" :key="user.bmxID">
                     <div class="card custom-card h-100 w-100" style="width: 14rem;" v-if="bikes">
                         <div class="card-body">
-                            <img src="https://i.postimg.cc/056Z7X3W/64fb0f798d543b317deb19de-wethepeople-NOVA-glossy-raw-01-web.jpg"
+                            <img :src="user.profileUrl"
                                 class="card-img-top custom-img" alt="...">
                             <h5 class="card-title">{{ user.firstName }}</h5>
                             <h5 class="card-title">{{ user.lastName }}</h5>
                             <h5 class="card-title mb-5">{{ user.category }}</h5>
                             <div class="d-flex btns">
-                                <router-link :to="'/product/edit/' + user.bmxID" class="btn my-2 "><i
+                                <router-link :to="'/user/edit/' + user.bmxID" class="btn my-2 "><i
                                         class="bi bi-pencil pe-2"></i>Edit</router-link>
                                 <button class="btn" @click="delProd(user.bmxID)" style="color: red">
                                     <i class="bi bi-trash3 pe-2" style="color: red"></i>Delete

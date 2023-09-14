@@ -5,11 +5,20 @@
             <h1 class="m-5">PRODUCTS</h1>
             <div class="me-5 d-flex w-50">
                 <div class="custom-group">
-                    <input type="text" class="form-control h-100 me-2 custom-input" v-model="searchQuery"  @input="searchBikes" placeholder="BMX">
+                    <form @submit.prevent="searchForm">
+                        <input type="text" class="form-control h-100 me-2 custom-input" v-model="searchQuery" placeholder="BMX">
+                        <div v-if="message">
+                            <p>{{ message }}</p>
+                        </div>
+                        <button class="btn">Search</button>
+                    </form>
                     <i class="bi bi-x-circle custom-icon" @click="clear"></i>
                 </div>
-                <button class="btn btn-dark w-100 h-100 me-2" @click="sortBikes('amount')">Sort By Name</button>
-                <button class="btn btn-dark w-100 h-100 me-2" @click="sortBikes('prodName')">Sort By Price</button>
+                <button class="btn btn-dark w-100 h-100 me-2" @click="sortBikes('prodName')">Sort By Name</button>
+                <button class="btn btn-dark w-100 h-100 me-2" @click="sortBikes('amount')">Sort By Price</button>
+                <div v-if="notFoundMsg">
+                    {{ notFoundMsg }}
+                </div>
             </div>
         </div>
         <div class="container">
@@ -26,7 +35,7 @@
                     </div>
             </div>
             <div  v-else>
-                <div class="d-flex justify-content-center w-100">
+                <div class="d-flex justify-content-center w-100 mb-5">
                     <div class="spinner-border" role="status">
                       <span class="visually-hidden">Loading...</span>
                     </div>
@@ -39,12 +48,16 @@
 <script>
 import { useCookies } from "vue3-cookies";
 import Navbar from '@/components/TestNav.vue'
-import { mapActions, mapState, mapMutations } from 'vuex'
+import { mapActions, mapState } from 'vuex'
+import { Form, Field, ErrorMessage  } from 'vee-validate';
 
 const { cookies } = useCookies();
 export default {
     components: {
-        Navbar
+        Navbar,
+        Form,
+        Field,
+        ErrorMessage
     },
     data(){
         return{
@@ -88,8 +101,13 @@ export default {
             }
         },
 
-        searchBikes(){
-            this.searchProd(this.searchQuery)
+        searchForm(){
+            if(!this.searchQuery === null){
+                const message = 'Invalid'
+                return message
+            } else if(this.searchQuery){
+                this.searchProd(this.searchQuery)
+            }
         },
 
         clear(){
@@ -111,14 +129,14 @@ img {
 }
 
 .custom-group{
-    width: 500px;
+    width: 50rem;
     position: relative;
     margin-right: 1rem;
 }
 
 .custom-input{
      margin: 0px;
-        padding: 0px;
+        padding-right: 1rem;
         width: 100%;
         outline: none;
         height: 30px;
@@ -129,7 +147,7 @@ img {
      position: absolute;
         top: 0;
         border-radius: 5px;
-        right: 6px;
+        right: 9px;
         z-index: 2;
         border: none;
         top: 6px;

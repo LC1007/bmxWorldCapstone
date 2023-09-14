@@ -139,7 +139,7 @@ const actions = {
 
   async searchProd({commit}, searchQuery){
     try {
-      const { data } = await axios.get(`${url}products/search/${searchQuery}`)
+      const { data } = await axios.post(`${url}products/search/${searchQuery}`)
       commit('setBikes', data.product)
     } catch (error) {
       console.error("Error fetching products:", error);

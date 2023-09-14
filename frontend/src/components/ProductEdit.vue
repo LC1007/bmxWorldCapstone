@@ -13,8 +13,7 @@
                     </div>
                     <div class="mb-3">
                         <label for="productDesc" class="form-label">BMX Descripion</label>
-                        <textarea name="productDesc" v-model="selectedBikeEdit.prodDesc" class="form-control" cols="30"
-                            rows="10"></textarea>
+                        <textarea name="productDesc" v-model="selectedBikeEdit.prodDesc" class="form-control" cols="30" rows="10"></textarea>
                     </div>
                     <div class="mb-3">
                         <label for="quantity" class="form-label">Quantity</label>
@@ -51,14 +50,14 @@ import sweet from 'sweetalert'
 export default {
     data() {
         return {
-            populatedData(bikeEdit) {
+            populatedData(selectedBikeEdit) {
                 this.selectedBikeEdit = {
-                    prodName: bikeEdit?.prodName || '',
-                    prodDesc: bikeEdit?.prodDesc || '',
-                    quantity: bikeEdit?.quantity || '',
-                    amount: bikeEdit?.amount || '',
-                    category: bikeEdit?.category || '',
-                    prodUrl: bikeEdit?.prodUrl || ''
+                    prodName: selectedBikeEdit?.prodName || '',
+                    prodDesc: selectedBikeEdit?.prodDesc || '',
+                    quantity: selectedBikeEdit?.quantity || '',
+                    amount: selectedBikeEdit?.amount || '',
+                    category: selectedBikeEdit?.category || '',
+                    prodUrl: selectedBikeEdit?.prodUrl || ''
                 }
             }
         }

@@ -100,8 +100,14 @@ export default {
         startEdit(user) {
             user.isEdit = true
         },
-        saveEdit(user){
-            user.isEdit = false
+        async saveEdit(user){
+            try {
+                const { isEdit, ...updateData } = user
+                await this
+                user.isEdit = false
+            } catch (error) {
+                
+            }
         },
         stopEdit(user){
             user.isEdit = false
