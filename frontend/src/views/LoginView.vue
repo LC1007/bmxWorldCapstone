@@ -32,6 +32,8 @@
 <script>
 import { mapActions, mapMutations } from 'vuex'
 import {useCookies} from 'vue3-cookies'
+import Swal from 'sweetalert2'
+
 const { cookies } = useCookies()
     export default {
         data(){
@@ -45,13 +47,53 @@ const { cookies } = useCookies()
         methods:{
             ...mapActions('usermodule', ['submitLogin', 'fetchUsers']),
             async login(){
-                await this.submitLogin(this.loginData)
-                cookies.get('loggedInUser');
+                try {
+                    await this.submitLogin(this.loginData)
+                    
+                    const loggedInUser = cookies.get('loggedInUser')
+
+                    if(loggedInUser){
+                        const Toast = Swal.mixin({
+                        toast: true,
+                        position: 'top-right',
+                        iconColor: 'green',
+                        icon: 'success',
+                        customClass: {
+                            popup: 'colored-toast'
+                        },
+                        showConfirmButton: false,
+                        timer: 4000,
+                        timerProgressBar: true
+                    })
+                    await Toast.fire({
+                        icon: 'success',
+                        title: 'Login Successfully'
+                    })
+                    } else {
+
+                    }
+                } catch (error) {
+                    const Toast = Swal.mixin({
+                    toast: true,
+                    position: 'top-right',
+                    iconColor: 'white',
+                    icon: 'error',
+                    customClass: {
+                        popup: 'colored-toast'
+                    },
+                    showConfirmButton: false,
+                    timer: 4000,
+                    timerProgressBar: true
+                })
+
+                await Toast.fire({
+                    icon: 'error',
+                    title: 'Error'
+                })
+                 console.error('Login error:', error);
+                }
             }
         },
-        // beforeCreate(){
-        //     this.$store.dispatch('fetchUsers')
-        // },
         mounted(){
             cookies.get('loggedInUser');
         }

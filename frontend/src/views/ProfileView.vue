@@ -2,7 +2,7 @@
     <div>
         <Navbar />
 
-        <h1 class="text-center my-5">Profile</h1>
+        
 
         <!-- <div v-if="user">
             <h2>{{ user.firstName }}</h2>
@@ -13,6 +13,10 @@
 
         <div class="container mb-5">
             <div class="row" v-if="user">
+                <div class="d-flex align-items-center justify-content-center">
+                <h1 class="text-center my-5">Profile</h1>
+                <router-link to="/admin" class="btn btn-dark mx-3">Admin</router-link>
+            </div>
                 <div class="col h-100">
                     <img :src="user.profileUrl" class="w-50"
                         alt="">
@@ -52,6 +56,16 @@
                         </template>
                         <template v-else>
                             <p>{{ user.profileUrl }}</p>
+                        </template>
+
+                        <template v-if="user.isEdit">
+                            <!-- <h4>Password</h4>
+                            <input type="text" class="form-control" v-model="user.userPass"> -->
+                            <button class="btn" @click="btnPassword(user)">Reset Password?</button>
+
+                            <template v-if="user.showPassword">
+                                <input type="text" class="form-control" name="" id="">
+                            </template>
                         </template>
                     <template v-if="!user.isEdit">
                         <div>
@@ -111,6 +125,10 @@ export default {
         },
         stopEdit(user){
             user.isEdit = false
+            user.showPassword = false
+        },
+        btnPassword(user){
+            user.showPassword = true
         }
     },
     created() {

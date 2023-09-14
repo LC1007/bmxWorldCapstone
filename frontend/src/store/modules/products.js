@@ -1,17 +1,26 @@
 import axios from "axios"
 import router from '@/router'
 const url = "https://bmxcap.onrender.com/";
+import sweet from "sweetalert";
 
 const state = {
   bikes: [],
   featuredBikes: null,
   selectedBike: null,
   selectedBikeEdit: null,
+  deleteInProgress: false,
   prodDetails: null,
   cart: null,
   bikeID: localStorage.getItem("bikeID") || null,
+  // Sort and Filter
   sortOrder: "asc",
   sortOption: "amount",
+  categoryFilter: null,
+  searchQuery: "",
+  sortBy: "",
+  filterBy: '',
+  // Messsages 
+  msg: null
 };
 
 const getters = {
@@ -24,8 +33,8 @@ const mutations = {
   setBikes(state, updatedBike) {
     state.bikes = updatedBike;
   },
-  setFeaturedBikes(state, data){
-    state.featuredBikes = data
+  setFeaturedBikes(state, data) {
+    state.featuredBikes = data;
   },
   setProdDetails(state, data) {
     state.prodDetails = data;
@@ -33,8 +42,8 @@ const mutations = {
   setSelectedBike(state, data) {
     state.selectedBike = data;
   },
-  setSelectedBikeEdit(state, data){
-    state.selectedBikeEdit = data
+  setSelectedBikeEdit(state, data) {
+    state.selectedBikeEdit = data;
   },
   setCart(state, data) {
     state.cart = data;
@@ -50,12 +59,35 @@ const mutations = {
       state.bikes[exisitingProdID] = updatedBike;
     }
   },
+  setDeleteInProgress(state, value) {
+    state.deleteInProgress = value;
+  },
+
+  // Sort and Filter
   setSortOrder(state, sortOrder) {
     state.sortOrder = sortOrder;
   },
-  setSortOption(state, option){
-    state.sortOption = option
-  }
+  setSortOption(state, option) {
+    state.sortOption = option;
+  },
+  setCategoryFilter(state, category) {
+    state.categoryFilter = category;
+  },
+  setSearchQuery(state, query) {
+    state.searchQuery = query;
+  },
+  setSortBy(state, sortBy) {
+    state.sortBy = sortBy;
+  },
+  setFilterBy(state, filterBy) {
+    state.filterBy = filterBy;
+  },
+
+  // Messages
+
+  setMsg(state, msg) {
+    state.msg = msg;
+  },
 };
 
 const actions = {
@@ -102,6 +134,21 @@ const actions = {
     }
   },
 
+  async deleteBike({commit, dispatch, state}, bike){
+    commit("setDeleteInProgress", true);
+    try {
+      const { msg } = (await axios.delete(`${url}product/${bike.bmxID}`)).data
+      if(msg){
+         commit("setBikes", msg);
+         dispatch('fetchBikes')
+      }
+    } catch (error) {
+      console.log(error);
+    } finally{
+        commit("setDeleteInProgress", false);
+    }
+  },
+
   // Single product add to cart
   async addToCart({ commit }, loggedInUserID) {
     try {
@@ -140,9 +187,15 @@ const actions = {
   async searchProd({commit}, searchQuery){
     try {
       const { data } = await axios.post(`${url}products/search/${searchQuery}`)
+      
       commit('setBikes', data.product)
     } catch (error) {
       console.error("Error fetching products:", error);
+      sweet({
+        title: "Product not found",
+        icon: "error",
+        timer: 4500,
+      });
     }
   }
 };

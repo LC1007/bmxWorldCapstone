@@ -46,6 +46,8 @@
 import Navbar from '@/components/NavbarComp.vue'
 import { mapActions } from 'vuex'
 import router from '@/router'
+import Swal from 'sweetalert2'
+
 export default {
     data() {
         return {
@@ -64,10 +66,20 @@ export default {
     },
     methods:{
         ...mapActions('products',['createProd']),
-        createProdForm(){
+        async createProdForm(){
             try {
-                this.createProd(this.addProd)
-                router.push({name: 'products'})
+                await this.createProd(this.addProd)
+
+                await Swal.fire({
+                    icon: 'success',
+                    title: 'Product Created Successfully',
+                    toast: true, // Display as toast notification
+                    position: 'top-end', // Position the toast at the top-right
+                    showConfirmButton: false, // Hide the "OK" button
+                    timer: 3000, // Automatically close after 3 seconds (adjust as needed)
+                });
+
+                router.push({ name: 'admin' })
             } catch (error) {
                 console.log(error);
             }

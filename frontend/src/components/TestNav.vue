@@ -26,7 +26,7 @@
                         <router-link to="/signup" class="nav-link" v-if="!hasCookie">Sign Up</router-link>
                     </li>
                     <li class="nav-item">
-                      <button class="btn nav-link pe-3 me-lg-2" v-if="!hasCookie">Login</button>
+                      <router-link to="/Login" class="nav-link" v-if="!hasCookie">Login</router-link>
                     </li>
                     <div class="d-sm-flex d-lg-flex align-items-lg-center align-items-sm-start">
                         <li class="nav-item">
@@ -50,13 +50,12 @@
               </div>
             </div>
           </nav>
-          <img
-        src="https://images.unsplash.com/photo-1576282577948-50480284e7b1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80"
-        class="w-100" alt="">
+          <!-- <img src="https://images.unsplash.com/photo-1576282577948-50480284e7b1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80"
+        class="w-100" alt=""> -->
         
-      <!-- <video class="w-100" data-object-fit="cover" muted autoplay loop>
+      <video class="w-100" data-object-fit="cover" muted autoplay loop>
                   <source src="https://player.vimeo.com/progressive_redirect/playback/684098096/rendition/540p?loc=external&signature=d7a3b70d4dabefd7e151554e9d2b1556f8d4be6fdd4c04abf24dcf27c6bb6a70" type="video/mp4">
-       </video> -->
+       </video>
     </div>
 </template>
 

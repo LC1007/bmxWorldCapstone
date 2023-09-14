@@ -100,21 +100,22 @@ const actions = {
 
         cookies.set("loggedInUser", { token, result });
         authUser.applyToken(token);
-        sweet({
-          title: "Login",
-          text: msg,
-          icon: "success",
-          timer: 4000,
-        });
+        // sweet({
+        //   title: "Login",
+        //   text: msg,
+        //   icon: "success",
+        //   timer: 4000,
+        // });
         router.push({ name: "home" });
-      } else {
-        sweet({
-          title: "Error",
-          errMsg: errMsg,
-          icon: "error",
-          timer: 4000,
-        });
-      }
+      } 
+      // else {
+      //   sweet({
+      //     title: "Error",
+      //     errMsg: errMsg,
+      //     icon: "error",
+      //     timer: 4000,
+      //   });
+      // }
     } catch (error) {
       console.log(error);
     }

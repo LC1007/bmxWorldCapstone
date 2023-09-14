@@ -20,7 +20,7 @@
                             <div class="d-flex btns">
                                 <router-link :to="'/product/edit/' + bike.bmxID" class="btn my-2 "><i
                                         class="bi bi-pencil pe-2"></i>Edit</router-link>
-                                <button class="btn" @click="delProd(bike.bmxID)" style="color: red">
+                                <button class="btn" @click="delProd(bike)" :disabled="deleteInProgress" style="color: red">
                                     <i class="bi bi-trash3 pe-2" style="color: red"></i>Delete
                                 </button>
                             </div>
@@ -31,7 +31,7 @@
                     </div>
                 </div>
 
-                <table class="table custom-table">
+                <table class="table custom-table w-100">
                     <thead>
                         <tr>
                             <th>Product ID</th>
@@ -51,14 +51,14 @@
                                 <img :src="bike.prodUrl" style="width: 7rem" alt="">
                             </td>
                             <td>{{ bike.prodName }}</td>
-                            <td>{{ bike.prodDesc }}</td>
+                            <td class="w-25">{{ bike.prodDesc }}</td>
                             <td>{{ bike.category }}</td>
                             <td>R{{ bike.amount }}</td>
                             <td>{{ bike.quantity }}</td>
                             <td>
                                 <router-link :to="'/product/edit/' + bike.bmxID" class="btn my-2 "><i
                                         class="bi bi-pencil pe-2"></i>Edit</router-link>
-                                <button class="btn" @click="delProd(bike.bmxID)" style="color: red">
+                                <button class="btn" @click="delProd(bike)" :disabled="deleteInProgress" style="color: red">
                                     <i class="bi bi-trash3 pe-2" style="color: red"></i>Delete
                                 </button>
                             </td>
@@ -135,6 +135,7 @@
 <script>
 import Navbar from '@/components/TestNav.vue'
 import { mapActions, mapState } from 'vuex'
+import Swal from 'sweetalert2'
 
 export default {
     data() {
@@ -145,14 +146,15 @@ export default {
                 quantity: '',
                 amount: '',
                 prodUrl: ''
-            }
+            },
+            deleteInProgress: false
         }
     },
     components: {
         Navbar,
     },
     computed: {
-        ...mapState('products', ['bikes', 'selectedBikeEdit']),
+        ...mapState('products', ['bikes', 'selectedBikeEdit', 'deleteInProgress']),
         ...mapState('usermodule', ['users'])
     },
     mounted() {
@@ -160,15 +162,31 @@ export default {
         this.fetchUsers();
     },
     methods: {
-        ...mapActions('products', ['fetchBikes', 'fetchBike', 'createProd', 'updateBike']),
+        ...mapActions('products', ['fetchBikes', 'fetchBike', 'createProd', 'updateBike', 'deleteBike']),
         ...mapActions('usermodule', ['fetchUsers']),
 
-        delProd(bike) {
-            try {
-                this.deleteProd(bike)
-            } catch (error) {
+       async delProd(bike) {
 
-            }
+        this.$store.commit('products/setDeleteInProgress', false)
+        await Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Swal.fire(
+                        'Deleted!',
+                        'Your file has been deleted.',
+                        'success'
+                    )
+                    // this.deleteInProgress = true
+                    this.deleteBike(bike)
+                }
+            })
         }
     }
 }
